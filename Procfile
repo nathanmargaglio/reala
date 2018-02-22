@@ -1,0 +1,1 @@
+web: gunicorn bfds.wsgi --log-file -

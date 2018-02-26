@@ -1,5 +1,6 @@
 from django.db import models
 import os
+import requests
 
 
 class Owner(models.Model):
@@ -17,6 +18,11 @@ class Owner(models.Model):
     lat = models.FloatField(default=None)
     lon = models.FloatField(default=None)
 
-    def get_formatted_address(self, address):
-        "https://maps.googleapis.com/maps/api/geocode/json?address=" + "ADDRESS" + "&key=" + os.environ[
-            'GOOGLE_API_KEY']
+    @staticmethod
+    def get_geocoded_address(formatted_address):
+        url_address = formatted_address.replace(' ', '+')
+        get_url = "https://maps.googleapis.com/maps/api/geocode/json?address={}&key=".format(url_address)\
+               + os.environ['GOOGLE_API_KEY']
+
+        r = requests.get(get_url)
+        return r.json()

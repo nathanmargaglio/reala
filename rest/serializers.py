@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from rest.models import Owner
+from pprint import pprint
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -22,6 +23,9 @@ class OwnerSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         owner = Owner()
-        print(Owner.get_geocoded_address(validated_data['address']))
-        print(validated_data)
-        return False
+        if validated_data['address']:
+            owner.from_raw_address(validated_data['address'])
+            owner.save()
+            return owner
+        else:
+            raise ValueError('Need "address" field.')

@@ -15,7 +15,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'name')
 
 class OwnerSerializer(serializers.ModelSerializer):
-    address = serializers.CharField(write_only=True)
+    address = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = Owner
@@ -23,9 +23,9 @@ class OwnerSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         owner = Owner()
-        if validated_data['address']:
+        if 'address' in validated_data:
             owner.from_raw_address(validated_data['address'])
             owner.save()
             return owner
         else:
-            raise ValueError('Need "address" field.')
+            raise serializers.ValidationError("address field required:  supply a raw address")

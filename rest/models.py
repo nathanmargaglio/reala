@@ -12,15 +12,16 @@ class Parcel(models.Model):
 
     """
 
+    id = models.BigAutoField(primary_key=True)
     formatted_address = models.CharField(default='', max_length=128)
-    street_number = models.IntegerField(default=None)
+    street_number = models.IntegerField(default=None, null=True)
     route = models.CharField(default='', max_length=128)
     city = models.CharField(default='', max_length=128)
     county = models.CharField(default='', max_length=128)
     state = models.CharField(default='', max_length=128)
     postal_code = models.CharField(default='', max_length=128)
-    lat = models.FloatField(default=None)
-    lng = models.FloatField(default=None)
+    lat = models.FloatField(default=None, null=True)
+    lng = models.FloatField(default=None, null=True)
     place_id = models.CharField(default='', max_length=128)
     place_type = models.CharField(default='', max_length=128)
 
@@ -78,7 +79,7 @@ class Parcel(models.Model):
 
     def set_fields_from_string(self, address):
         """
-        Set the model's fields from a 'pretty' address
+        Set the model's fields from a 'raw' address
         :param address: a string, the address formatted from components (e.g., '123 Fake St, Buffalo, NY')
         :return: self, the newly attributed model
 
@@ -111,10 +112,14 @@ class Parcel(models.Model):
         return self
 
 
-class Owner(Parcel):
+class Owner(models.Model):
+    id = models.BigAutoField(primary_key=True)
     # Owner Info
+    raw_name = models.CharField(default='', max_length=128)
     first_name = models.CharField(default='', max_length=128)
     last_name = models.CharField(default='', max_length=128)
+
+    home = models.OneToOneField(Parcel, null=True, on_delete=models.CASCADE)
     phone = models.CharField(default='', max_length=128)
     email = models.CharField(default='', max_length=128)
 

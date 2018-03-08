@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from rest.models import Owner
-from pprint import pprint
+from rest.models import Owner, Parcel
+
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -14,18 +14,25 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         model = Group
         fields = ('url', 'name')
 
-class OwnerSerializer(serializers.ModelSerializer):
+
+class ParcelSerializer(serializers.ModelSerializer):
     address = serializers.CharField(write_only=True, required=False)
 
     class Meta:
-        model = Owner
+        model = Parcel
         fields = '__all__'
 
     def create(self, validated_data):
-        owner = Owner()
+        parcel = Parcel()
         if 'address' in validated_data:
-            owner.from_raw_address(validated_data['address'])
-            owner.save()
-            return owner
+            parcel.set_fields_from_string(validated_data['address'])
+            parcel.save()
+            return parcel
         else:
             raise serializers.ValidationError("address field required:  supply a raw address")
+
+
+class OwnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Owner
+        fields = '__all__'

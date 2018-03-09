@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from rest.serializers import UserSerializer, GroupSerializer, OwnerSerializer
-from rest.models import Owner
+from rest.serializers import UserSerializer, GroupSerializer, ParcelSerializer, OwnerSerializer
+from rest.models import Owner, Parcel
+import json
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -19,6 +20,17 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+
+class ParcelViewSet(viewsets.ModelViewSet):
+    queryset = Parcel.objects.all()
+    serializer_class = ParcelSerializer
+
+    def get_queryset(self):
+        query_params = self.request.GET
+        if 'single' in query_params and query_params['single'] in ['true', 'True', 'TRUE']:
+            return Parcel().get_single_result(query_params)
+        return Parcel().get_by_components(query_params)
 
 
 class OwnerViewSet(viewsets.ModelViewSet):

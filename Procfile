@@ -1,1 +1,1 @@
-web: gunicorn bfds.wsgi --log-file -
+web: gunicorn --pythonpath server bfds.wsgi --log-file -

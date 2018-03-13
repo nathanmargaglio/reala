@@ -13,12 +13,12 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/cli": "~1.7.1",
-    "@angular/compiler-cli": "^5.2.0",
     "@angular/animations": "^5.2.8",
     "@angular/cdk": "github:angular/cdk-builds",
+    "@angular/cli": "~1.7.1",
     "@angular/common": "^5.2.0",
     "@angular/compiler": "^5.2.0",
+    "@angular/compiler-cli": "^5.2.0",
     "@angular/core": "^5.2.6",
     "@angular/forms": "^5.2.0",
     "@angular/http": "^5.2.0",
@@ -26,10 +26,15 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "@types/lodash": "^4.14.104",
     "core-js": "^2.4.1",
+    "install": "^0.10.4",
+    "lodash": "^4.17.5",
+    "ngx-restangular": "^2.1.0",
+    "npm": "^5.7.1",
     "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19",
-    "typescript": "~2.5.3"
+    "typescript": "~2.5.3",
+    "zone.js": "^0.8.19"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.1",

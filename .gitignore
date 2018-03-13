@@ -1,4 +1,6 @@
 *.pyc
 .env
 .idea/
-/staticfiles
+server/staticfiles
+server/static/*
+!server/static/human.txt

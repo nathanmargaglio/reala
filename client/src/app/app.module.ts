@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RestangularModule, Restangular } from 'ngx-restangular';
+import { environment } from '../environments/environment';
 
 // Material
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +14,7 @@ import { AppComponent } from './app.component';
 import { ButtonComponent } from './button/button.component';
 
 export function RestangularConfigFactory (RestangularProvider) {
-  RestangularProvider.setBaseUrl('http://localhost:8000/api');
+  RestangularProvider.setBaseUrl(`${environment.apiUrl}/api`);
   RestangularProvider.setRequestSuffix('/');
   RestangularProvider.setResponseExtractor(function(response, operation, what, url) {
     var newResponse;

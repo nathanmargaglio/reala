@@ -8,22 +8,26 @@ import { Restangular } from 'ngx-restangular';
 })
 export class ButtonComponent implements OnInit {
 
-  value = 0;
+  address: string = '';
+  parcels_api;
+  parcels;
   constructor(private restangular: Restangular) { }
 
   ngOnInit() {
-    this.value = 0;
-
-    let res = this.restangular.all('parcels');
-    res.getList().subscribe(d => {
-      console.log(d)
-    });
+    this.parcels_api = this.restangular.all('parcels');
+    this.parcels_api.getList().subscribe(data => {
+      this.parcels = data;
+    })
   }
 
-  bChange(d) {
-    console.log(d.source.checked);
-    this.value++;
-    console.log("!!");
+  onSubmit(){
+    console.log(this.address);
+    let data = {"address": this.address};
+    this.parcels_api.post(data).subscribe(d => {
+      this.parcels_api.getList().subscribe(data => {
+        this.parcels = data;
+      })
+    });
   }
 
 }

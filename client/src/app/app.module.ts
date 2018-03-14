@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RestangularModule, Restangular } from 'ngx-restangular';
+import { FormsModule } from '@angular/forms';
 
 // Material
 import { MatButtonModule } from '@angular/material/button';
@@ -38,6 +39,7 @@ export function RestangularConfigFactory (RestangularProvider) {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FormsModule,
     RestangularModule,
     RestangularModule.forRoot(RestangularConfigFactory),
 

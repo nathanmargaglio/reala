@@ -1,9 +1,10 @@
-<form class="example-form" action="">
+<form (ngSubmit)="onSubmit()">
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="Address" [value]="value">
+    <input name="address" matInput placeholder="Address" [(ngModel)]="address" #ctrl="ngModel">
   </mat-form-field>
-
-  <button type="submit" mat-mini-fab (change)="bChange($event)">{{value}}</button>
-
-
+  <button type="submit" mat-mini-fab>!</button>
 </form>
+
+<div *ngFor="let parcel of parcels">
+  <p>{{parcel.formatted_address}}</p>
+</div>

@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "scripts": {
+    "start": "npm start --prefix client",
     "postinstall": "npm install --prefix client"
   }
 }

@@ -3,5 +3,7 @@
 .idea/
 venv/
 server/staticfiles
-server/static/*
+server/static/*.*
 !server/static/human.txt
+server/static/static/*
+!server/static/static/human.txt

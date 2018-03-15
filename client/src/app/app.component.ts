@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.http.get('/assets/particles/particlesjs-config.json').subscribe(data => {
+    this.http.get('/assets/particles/particlesjs-config-default.json').subscribe(data => {
       this.particlesParams = data;
       this.particlesInit = true;
     });

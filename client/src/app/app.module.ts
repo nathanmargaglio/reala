@@ -4,12 +4,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RestangularModule, Restangular } from 'ngx-restangular';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
+import { ParticlesModule } from 'angular-particle';
+import { HttpClientModule } from '@angular/common/http';
 
 // Material
 import { MatButtonModule } from '@angular/material/button';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatCardModule} from '@angular/material/card';
 
 import { AppComponent } from './app.component';
 import { ButtonComponent } from './button/button.component';
@@ -40,14 +43,17 @@ export function RestangularConfigFactory (RestangularProvider) {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     FormsModule,
     RestangularModule,
     RestangularModule.forRoot(RestangularConfigFactory),
+    ParticlesModule,
 
     MatButtonModule,
     MatButtonToggleModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

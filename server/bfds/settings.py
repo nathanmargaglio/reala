@@ -140,6 +140,7 @@ STATIC_URL = '/static/'
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static/static'), # not pretty, but it works
 )
 
 GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']

@@ -8,7 +8,7 @@
       "root": "src",
       "outDir": "../server/static",
       "assets": [
-        "assets",
+        "static/assets",
         "favicon.ico"
       ],
       "index": "index.html",
@@ -20,7 +20,7 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "assets/bfds-theme.scss"
+        "static/assets/bfds-theme.scss"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

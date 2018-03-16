@@ -2,8 +2,16 @@
   <app-button (reloadParcels)="loadParcels($event)"></app-button>
 </mat-card>
 <div class="list-container">
-  <mat-card class="list-card" [perfectScrollbar]="config">
+  <mat-card class="list-card" [perfectScrollbar]="scrollConfig">
     <mat-list>
+      <mat-list-item *ngFor="let parcel of parcels">
+        {{parcel.formatted_address}}
+        <mat-divider></mat-divider>
+      </mat-list-item>
+      <mat-list-item *ngFor="let parcel of parcels">
+        {{parcel.formatted_address}}
+        <mat-divider></mat-divider>
+      </mat-list-item>
       <mat-list-item *ngFor="let parcel of parcels">
         {{parcel.formatted_address}}
         <mat-divider></mat-divider>

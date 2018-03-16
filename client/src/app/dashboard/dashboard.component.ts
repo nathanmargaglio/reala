@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Restangular } from 'ngx-restangular';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,6 +10,7 @@ import { Restangular } from 'ngx-restangular';
 export class DashboardComponent implements OnInit {
 
   address: string = '';
+  scrollConfig = PERFECT_SCROLLBAR_CONFIG;
   parcels_api;
   parcels;
   constructor(private restangular: Restangular) { }

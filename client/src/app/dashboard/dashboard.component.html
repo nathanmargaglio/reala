@@ -1,0 +1,14 @@
+<mat-card class="header-card">
+  <app-button (reloadParcels)="loadParcels($event)"></app-button>
+</mat-card>
+<div class="list-container">
+  <mat-card class="list-card" [perfectScrollbar]="config">
+    <mat-list>
+      <mat-list-item *ngFor="let parcel of parcels">
+        {{parcel.formatted_address}}
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+  <mat-card class="detail-card">2</mat-card>
+</div>

@@ -13,9 +13,17 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatListModule} from '@angular/material/list';
+import {MatDividerModule} from '@angular/material/divider';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+
 
 import { AppComponent } from './app.component';
 import { ButtonComponent } from './button/button.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export function RestangularConfigFactory (RestangularProvider) {
   RestangularProvider.setBaseUrl(`${environment.apiUrl}/api`);
@@ -34,11 +42,15 @@ export function RestangularConfigFactory (RestangularProvider) {
   });
 }
 
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 
 @NgModule({
   declarations: [
     AppComponent,
-    ButtonComponent
+    ButtonComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -48,14 +60,23 @@ export function RestangularConfigFactory (RestangularProvider) {
     RestangularModule,
     RestangularModule.forRoot(RestangularConfigFactory),
     ParticlesModule,
+    PerfectScrollbarModule,
+    MatDividerModule,
 
     MatButtonModule,
     MatButtonToggleModule,
     MatInputModule,
     MatFormFieldModule,
-    MatCardModule
+    MatCardModule,
+    MatGridListModule,
+    MatListModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

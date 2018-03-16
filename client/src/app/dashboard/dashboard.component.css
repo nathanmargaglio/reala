@@ -1,0 +1,42 @@
+mat-card {
+  margin: 6px;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.list-container > mat-card {
+  flex: 1;
+}
+
+mat-card.detail-card {
+  max-width: 25%;
+}
+
+@media only screen and (max-width: 768px) {
+  .list-container {
+    flex-direction: column;
+  }
+
+  .list-container > mat-card {
+    flex: 1;
+  }
+
+  mat-card.list-card {
+    max-width: none;
+    order: 2;
+  }
+
+  mat-card.list-card > mat-list > mat-list-item {
+    font-size: 13px;
+  }
+
+  mat-card.detail-card {
+    max-width: none;
+    max-height: 70px;
+    order: 1;
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Restangular } from 'ngx-restangular';
 
 @Component({
@@ -13,6 +13,9 @@ export class ButtonComponent implements OnInit {
   parcels;
   constructor(private restangular: Restangular) { }
 
+  @Output()
+  reloadParcels = new EventEmitter<boolean>();
+
   ngOnInit() {
     this.parcels_api = this.restangular.all('parcels');
     this.parcels_api.getList().subscribe(data => {
@@ -21,12 +24,9 @@ export class ButtonComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log(this.address);
     let data = {"address": this.address};
     this.parcels_api.post(data).subscribe(d => {
-      this.parcels_api.getList().subscribe(data => {
-        this.parcels = data;
-      })
+      this.reloadParcels.emit(true);
     });
   }
 

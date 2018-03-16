@@ -25,6 +25,13 @@ class Parcel(models.Model):
     place_id = models.CharField(default='', max_length=128)
     place_type = models.CharField(default='', max_length=128)
 
+    owner = models.ForeignKey(
+        'Owner',
+        default=None,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+
     @staticmethod
     def get_by_components(data):
         """
@@ -111,6 +118,39 @@ class Parcel(models.Model):
 
         return self
 
+    def generate_owner(self, data):
+        """
+        Creates an Owner object and fills it with data
+        :param data: a dict with Owner data
+        :return: newly generated Owner object
+
+        """
+
+        o = Owner()
+
+        for key in data:
+            if key in [f.name for f in Owner._meta.get_fields()]:
+                setattr(o, key, data[key])
+
+        self.owner = o
+
+        o.save()
+        self.save()
+        return o
+
+    def get_owner_from_api(self):
+        """
+        Retrieves Owner data from API
+        :return: Owner data
+
+        """
+
+        get_url = "http://bfds-tax-records.herokuapp.com/records/?street_number={}&route={}"\
+            .format(self.street_number, self.route)
+
+        r = requests.get(get_url)
+        return r.json()
+
 
 class Owner(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -119,7 +159,8 @@ class Owner(models.Model):
     first_name = models.CharField(default='', max_length=128)
     last_name = models.CharField(default='', max_length=128)
 
-    home = models.OneToOneField(Parcel, null=True, on_delete=models.CASCADE)
+    home = models.OneToOneField(Parcel, related_name="homeowner",
+                                null=True, on_delete=models.CASCADE)
     phone = models.CharField(default='', max_length=128)
     email = models.CharField(default='', max_length=128)
 

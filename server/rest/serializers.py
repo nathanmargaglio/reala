@@ -17,6 +17,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class ParcelSerializer(serializers.ModelSerializer):
     address = serializers.CharField(write_only=True, required=False)
+    owner = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Parcel

@@ -3,6 +3,7 @@ import os
 import requests
 from django.conf import settings
 from pprint import pprint
+from django.contrib.auth.models import User, Group
 
 
 class Parcel(models.Model):
@@ -154,6 +155,7 @@ class Parcel(models.Model):
 
 class Owner(models.Model):
     id = models.BigAutoField(primary_key=True)
+    users = models.ManyToManyField(User)
     # Owner Info
     raw_name = models.CharField(default='', max_length=128)
     first_name = models.CharField(default='', max_length=128)

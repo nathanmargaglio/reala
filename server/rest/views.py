@@ -40,13 +40,19 @@ class OwnerViewSet(viewsets.ModelViewSet):
     serializer_class = OwnerSerializer
 
     def retrieve(self, request, pk=None):
+        queryset = Owner.objects.all()
+        owner = get_object_or_404(queryset, pk=pk)
+
+        if self.request.user in owner.users.all():
+            serializer = OwnerSerializer(owner)
+            return Response(serializer.data)
+
         query_params = self.request.GET
         if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
+            # TODO: Purchase the Owner data
             pass
         else:
             return Response("Owner data available for purchase.", 402)
-        # Typical Response
-        queryset = Owner.objects.all()
-        owner = get_object_or_404(queryset, pk=pk)
+
         serializer = OwnerSerializer(owner)
         return Response(serializer.data)

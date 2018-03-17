@@ -3,6 +3,8 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest.serializers import UserSerializer, GroupSerializer, ParcelSerializer, OwnerSerializer
 from rest.models import Owner, Parcel
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 import json
 
 
@@ -36,3 +38,15 @@ class ParcelViewSet(viewsets.ModelViewSet):
 class OwnerViewSet(viewsets.ModelViewSet):
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
+
+    def retrieve(self, request, pk=None):
+        query_params = self.request.GET
+        if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
+            pass
+        else:
+            return Response("Owner data available for purchase.", 402)
+        # Typical Response
+        queryset = Owner.objects.all()
+        owner = get_object_or_404(queryset, pk=pk)
+        serializer = OwnerSerializer(owner)
+        return Response(serializer.data)

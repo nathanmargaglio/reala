@@ -120,6 +120,22 @@ class Parcel(models.Model):
 
         return self
 
+    @staticmethod
+    def get_estated_data(formatted_address):
+        """
+        Get Property info via Estated API
+        :param formatted_address: a string, the address formatted from components (e.g., '123 Fake St, Buffalo, NY')
+        :return: a dictionary representing the JSON response from the Estated Property API
+
+        """
+
+        url_address = formatted_address.replace(' ', '+')
+        get_url = "https://estated.com/api/property?token={}&conjoined_address={}"\
+            .format(settings.ESTATED_API_KEY, url_address)
+
+        r = requests.get(get_url)
+        return r.json()
+
     def generate_owner(self, data):
         """
         Creates an Owner object and fills it with data
@@ -130,33 +146,19 @@ class Parcel(models.Model):
 
         o = Owner()
 
-        for key in data:
-            if key in [f.name for f in Owner._meta.get_fields()]:
-                setattr(o, key, data[key])
+        res = self.get_estated_data(self.formatted_address)
 
-        self.owner = o
-
-        o.save()
-        self.save()
-        return o
-
-    def get_owner_from_api(self):
-        """
-        Retrieves Owner data from API
-        :return: Owner data
-
-        """
-
-        get_url = "http://bfds-tax-records.herokuapp.com/records/?street_number={}&route={}"\
-            .format(self.street_number, self.route)
-
-        r = requests.get(get_url)
-        return r.json()
+        if res['status'] == 'success':
+            o.estated = res['data']
+            self.owner = o
+            o.save()
+            self.save()
+            return o
+        else:
+            return None
 
 
 class Owner(models.Model):
     id = models.BigAutoField(primary_key=True)
     users = models.ManyToManyField(User)
     estated = JSONField(default=None)
-
-

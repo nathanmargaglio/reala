@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import sys
+
+dev_mode = False
+if 'runserver' in sys.argv or 'shell' in sys.argv:
+    dev_mode = True
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -83,18 +88,23 @@ WSGI_APPLICATION = 'bfds.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
+# You'll need to setup a local PostgreSQL database
+# https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'USER': 'nathan',
+        'NAME': 'reala'
     }
 }
 
 # Update database configuration with $DATABASE_URL.
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+
+if not dev_mode:
+    import dj_database_url
+    #db_from_env = dj_database_url.config(conn_max_age=500)
+    #DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -144,3 +154,4 @@ STATICFILES_DIRS = (
 )
 
 GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']
+ESTATED_API_KEY = os.environ['ESTATED_API_KEY']

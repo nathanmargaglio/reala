@@ -4,16 +4,17 @@ import requests
 from django.conf import settings
 from pprint import pprint
 from django.contrib.auth.models import User, Group
+from django.contrib.postgres.fields import JSONField
 
 
-class Parcel(models.Model):
+class Lead(models.Model):
 
     """
     This model provides columns and methods for individual real estate properties.
 
     """
 
-    id = models.BigAutoField(primary_key=True)
+    # Parcel Data
     formatted_address = models.CharField(default='', max_length=128)
     street_number = models.IntegerField(default=None, null=True)
     route = models.CharField(default='', max_length=128)
@@ -26,12 +27,9 @@ class Parcel(models.Model):
     place_id = models.CharField(default='', max_length=128)
     place_type = models.CharField(default='', max_length=128)
 
-    owner = models.ForeignKey(
-        'Owner',
-        default=None,
-        null=True,
-        on_delete=models.CASCADE,
-    )
+    # Owner Data
+    users = models.ManyToManyField(User, blank=True)
+    estated = JSONField(default=None, null=True)
 
     @staticmethod
     def get_by_components(data):
@@ -41,10 +39,10 @@ class Parcel(models.Model):
         :return: Matched queried Parcel objects
 
         """
-        parcels = Parcel.objects.all()
+        parcels = Lead.objects.all()
 
         for key in data:
-            if key in [f.name for f in Parcel._meta.get_fields()]:
+            if key in [f.name for f in Lead._meta.get_fields()]:
                 parcels = parcels.filter(**{key+'__icontains': data[key]})
 
         return parcels
@@ -59,10 +57,10 @@ class Parcel(models.Model):
         """
 
         components = {}
-        for field in [f.name for f in Parcel._meta.get_fields()]:
+        for field in [f.name for f in Lead._meta.get_fields()]:
             if field in data:
                 components[field] = data[field]
-                parcels = Parcel.get_by_components(components)
+                parcels = Lead.get_by_components(components)
 
                 if len(parcels) == 1:
                     return parcels
@@ -94,6 +92,7 @@ class Parcel(models.Model):
         """
 
         data = self.get_geocode_address(address)
+        print(data)
         address_components = data['results'][0]['address_components']
         formatted_address = data['results'][0]['formatted_address']
         geometry = data['results'][0]['geometry']
@@ -104,7 +103,7 @@ class Parcel(models.Model):
             cv = comp['short_name']
             ct = comp['types'][0]
 
-            if ct == 'street_number': self.street_number = cv
+            if ct == 'street_number': self.street_number = int(cv)
             if ct == 'route': self.route = cv
             if ct == 'locality': self.city = cv
             if ct == 'administrative_area_level_2': self.county = cv
@@ -112,14 +111,30 @@ class Parcel(models.Model):
             if ct == 'postal_code': self.postal_code = cv
 
         self.formatted_address = formatted_address
-        self.lat = geometry['location']['lat']
-        self.lng = geometry['location']['lng']
+        self.lat = float(geometry['location']['lat'])
+        self.lng = float(geometry['location']['lng'])
         self.place_id = place_id
         self.place_type = types[0]
 
         return self
 
-    def generate_owner(self, data):
+    @staticmethod
+    def get_estated_data(formatted_address):
+        """
+        Get Property info via Estated API
+        :param formatted_address: a string, the address formatted from components (e.g., '123 Fake St, Buffalo, NY')
+        :return: a dictionary representing the JSON response from the Estated Property API
+
+        """
+
+        url_address = formatted_address.replace(' ', '+')
+        get_url = "https://estated.com/api/property?token={}&conjoined_address={}"\
+            .format(settings.ESTATED_API_KEY, url_address)
+
+        r = requests.get(get_url)
+        return r.json()
+
+    def generate_owner(self):
         """
         Creates an Owner object and fills it with data
         :param data: a dict with Owner data
@@ -127,42 +142,11 @@ class Parcel(models.Model):
 
         """
 
-        o = Owner()
+        res = self.get_estated_data(self.formatted_address)
 
-        for key in data:
-            if key in [f.name for f in Owner._meta.get_fields()]:
-                setattr(o, key, data[key])
-
-        self.owner = o
-
-        o.save()
-        self.save()
-        return o
-
-    def get_owner_from_api(self):
-        """
-        Retrieves Owner data from API
-        :return: Owner data
-
-        """
-
-        get_url = "http://bfds-tax-records.herokuapp.com/records/?street_number={}&route={}"\
-            .format(self.street_number, self.route)
-
-        r = requests.get(get_url)
-        return r.json()
-
-
-class Owner(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    users = models.ManyToManyField(User)
-    # Owner Info
-    raw_name = models.CharField(default='', max_length=128)
-    first_name = models.CharField(default='', max_length=128)
-    last_name = models.CharField(default='', max_length=128)
-
-    home = models.OneToOneField(Parcel, related_name="homeowner",
-                                null=True, on_delete=models.CASCADE)
-    phone = models.CharField(default='', max_length=128)
-    email = models.CharField(default='', max_length=128)
-
+        if res['status'] == 'success':
+            self.estated = res['data']
+            self.save()
+            return self
+        else:
+            return None

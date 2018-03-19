@@ -1,0 +1,303 @@
+{
+    "status": "success",
+    "data": {
+        "property": {
+            "metadata": {
+                "address_match": "exact",
+                "property_id": 63481948,
+                "updated_at": null,
+                "property_classification_code": null,
+                "error_message": null
+            },
+            "address": {
+                "street_number": "110",
+                "street_name": "Knox",
+                "street_pre_direction": null,
+                "street_direction": null,
+                "street_suffix": "Ave",
+                "unit_type": null,
+                "unit_number": null,
+                "formatted_street_address": "110 Knox Ave",
+                "city": "Buffalo",
+                "state": "NY",
+                "zip_code": "14216",
+                "zip_code_plus_four": 3311,
+                "latitude": 42.94362,
+                "longitude": -78.863784
+            },
+            "site": {
+                "sublocality_id": null,
+                "locality_id": null,
+                "land_use_code": null,
+                "zoning": null,
+                "zoning_category": "Residential",
+                "zoning_description": "Duplex",
+                "depth": 151,
+                "width": 38,
+                "size": 5738,
+                "acres": 0.1317,
+                "range": null,
+                "township": null,
+                "section": null,
+                "block": null,
+                "lot": null,
+                "view": null,
+                "location_description": null,
+                "building_count": 1,
+                "parcel_id": "1402000788000001043000",
+                "tax_account_id": "140200-078-800-0001-043-000",
+                "legal_description": null,
+                "title": null
+            },
+            "structures": [
+                {
+                    "year_built": 1931,
+                    "effective_year_built": null,
+                    "rooms_count": null,
+                    "beds_count": 4,
+                    "baths_count": 2,
+                    "half_baths_count": null,
+                    "full_baths_count": 2,
+                    "quarter_baths_count": null,
+                    "three_quarter_baths_count": null,
+                    "stories_count": 2,
+                    "units_count": null,
+                    "total_size": 2056,
+                    "finished_size": 2056,
+                    "unfinished_size": 0,
+                    "basement_size": null,
+                    "garage_size": 378,
+                    "architecture_type": "Old",
+                    "exterior_wall_type": "Aluminum/vinyl",
+                    "air_conditioning_type": null,
+                    "basement_type": null,
+                    "building_type": null,
+                    "category": "Multifamily",
+                    "condition": "Average",
+                    "construction_type": null,
+                    "fireplace_count": null,
+                    "fireplace_type": null,
+                    "foundation_type": null,
+                    "flooring_type": null,
+                    "garage_type": "Detached",
+                    "heating_type": "Hot Water Steam",
+                    "mobile_home": null,
+                    "parking_spaces": null,
+                    "parking_type": "Detached Garage",
+                    "pool_type": null,
+                    "quality": null,
+                    "roof_type": null,
+                    "roof_style_type": null,
+                    "electricity_type": null,
+                    "fuel_type": "Oil",
+                    "sewer_type": "Commercial",
+                    "water_type": "Commercial"
+                }
+            ],
+            "postal": {
+                "carrier_code": "C001",
+                "delivery_point_code": 10,
+                "delivery_point_check_digit": 7,
+                "validated": "Y",
+                "deliverable": null,
+                "details": null
+            },
+            "boundaries": {
+                "geoJSON": null,
+                "WKT": null
+            },
+            "valuation": {
+                "value": 160501,
+                "type": null,
+                "low": 152926,
+                "high": 168076,
+                "confidence": 0.9,
+                "suggested_rental": null,
+                "market_value_change_year": null,
+                "market_value_change_quarter": null,
+                "forecast_1_year": null,
+                "version": "2.10"
+            },
+            "status": {
+                "rental": "false",
+                "vacant": null,
+                "market_status": null,
+                "foreclosure": null,
+                "rental_price": null,
+                "listing_price": null,
+                "details": null
+            },
+            "taxes": [
+                {
+                    "land": 16600,
+                    "improvement": 103400,
+                    "total": 120000,
+                    "tax_amount": 2920,
+                    "tax_year": 2016,
+                    "details": null,
+                    "outstanding_tax": null,
+                    "appraised_total": 120000,
+                    "appraised_land": 16600,
+                    "appraised_improvement": 103400,
+                    "exemptions": null
+                }
+            ],
+            "sales": [
+                {
+                    "date": "2012-12-21",
+                    "recording_date": "2017-07-22",
+                    "price": 142000,
+                    "type": "Grant Deed",
+                    "seller": "CIMATO SABATINO & MICHELLE F",
+                    "buyer": null,
+                    "transaction_id": "20130404213",
+                    "document_year": 2012,
+                    "sale_code": null,
+                    "multiAPN": 0,
+                    "hpi_adjusted_price_2010": 138373,
+                    "deed_book": null,
+                    "deed_page": null
+                }
+            ],
+            "mortgages": [
+                {
+                    "amount": 34700,
+                    "loan_type": "Conventional",
+                    "deed_type": "Mortgage Deed",
+                    "date": "2017-07-13",
+                    "term": 10,
+                    "due_date": "2027-07-21",
+                    "lender_name": "ST JOSEPH'S BUFFALO FCU *OTHER INSTITUTIONAL LENDERS",
+                    "details": null
+                }
+            ],
+            "owners": [
+                {
+                    "corporate_flag": 0,
+                    "name": "SMITH KENNETH A",
+                    "second_name": "SMITH MARY J",
+                    "phone": null,
+                    "address": "110 Knox Ave",
+                    "address2": null,
+                    "city": "Buffalo",
+                    "state": "NY",
+                    "zip": "14216",
+                    "first_name": null,
+                    "middle_name": null,
+                    "last_name": null,
+                    "suffix": null,
+                    "gender": null,
+                    "second_first_name": null,
+                    "second_middle_name": null,
+                    "second_last_name": null,
+                    "second_suffix": null,
+                    "second_gender": null,
+                    "email": null,
+                    "started_at": null,
+                    "ended_at": null
+                },
+                {
+                    "corporate_flag": null,
+                    "name": "CIMATO SABATINO & MICHELLE F",
+                    "second_name": null,
+                    "phone": null,
+                    "address": null,
+                    "address2": null,
+                    "city": null,
+                    "state": null,
+                    "zip": null,
+                    "first_name": null,
+                    "middle_name": null,
+                    "last_name": null,
+                    "suffix": null,
+                    "gender": null,
+                    "second_first_name": null,
+                    "second_middle_name": null,
+                    "second_last_name": null,
+                    "second_suffix": null,
+                    "second_gender": null,
+                    "email": null,
+                    "started_at": null,
+                    "ended_at": "2012-12-21"
+                }
+            ],
+            "comparables": [
+                {
+                    "property": {
+                        "metadata": {
+                            "property_id": 24656468,
+                            "comp_score": 8,
+                            "distance": null
+                        },
+                        "address": {
+                            "street_number": "20",
+                            "street_name": "Medford",
+                            "street_pre_direction": null,
+                            "street_direction": null,
+                            "street_suffix": "Pl",
+                            "unit_type": null,
+                            "unit_number": null,
+                            "formatted_street_address": "20 Medford Pl",
+                            "city": "Buffalo",
+                            "state": "NY",
+                            "zip_code": "14216",
+                            "zip_code_plus_four": 1204,
+                            "latitude": "42.957554000",
+                            "longitude": "-78.866632000"
+                        }
+                    }
+                },
+                {
+                    "property": {
+                        "metadata": {
+                            "property_id": 20269832,
+                            "comp_score": 8.5,
+                            "distance": null
+                        },
+                        "address": {
+                            "street_number": "313",
+                            "street_name": "Park",
+                            "street_pre_direction": "N",
+                            "street_direction": null,
+                            "street_suffix": "Ave",
+                            "unit_type": null,
+                            "unit_number": null,
+                            "formatted_street_address": "313 N Park Ave",
+                            "city": "Buffalo",
+                            "state": "NY",
+                            "zip_code": "14216",
+                            "zip_code_plus_four": 1937,
+                            "latitude": "42.953243000",
+                            "longitude": "-78.855362000"
+                        }
+                    }
+                },
+                {
+                    "property": {
+                        "metadata": {
+                            "property_id": 11899818,
+                            "comp_score": 7.25,
+                            "distance": null
+                        },
+                        "address": {
+                            "street_number": "429",
+                            "street_name": "Hinman",
+                            "street_pre_direction": null,
+                            "street_direction": null,
+                            "street_suffix": "Ave",
+                            "unit_type": null,
+                            "unit_number": null,
+                            "formatted_street_address": "429 Hinman Ave",
+                            "city": "Buffalo",
+                            "state": "NY",
+                            "zip_code": "14216",
+                            "zip_code_plus_four": 1018,
+                            "latitude": "42.956815000",
+                            "longitude": "-78.885622000"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

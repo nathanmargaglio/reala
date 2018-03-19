@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from rest.serializers import UserSerializer, GroupSerializer, ParcelSerializer, OwnerSerializer
-from rest.models import Owner, Parcel
+from rest.serializers import UserSerializer, GroupSerializer, \
+    LeadSerializer, LeadLimitedSerializer
+from rest.models import Lead
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 import json
@@ -24,35 +25,42 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
-class ParcelViewSet(viewsets.ModelViewSet):
-    queryset = Parcel.objects.all()
-    serializer_class = ParcelSerializer
+class LeadViewSet(viewsets.ModelViewSet):
+    queryset = Lead.objects.all()
+    serializer_class = LeadLimitedSerializer
+
+    """
+    def get_serializer_class(self):
+        query_params = self.request.GET
+        if 'all' in query_params and query_params['all'] in ['true', 'True', 'TRUE']:
+            return LeadSerializer
+        return LeadLimitedSerializer
+    """
 
     def get_queryset(self):
         query_params = self.request.GET
         if 'single' in query_params and query_params['single'] in ['true', 'True', 'TRUE']:
-            return Parcel().get_single_result(query_params)
-        return Parcel().get_by_components(query_params)
-
-
-class OwnerViewSet(viewsets.ModelViewSet):
-    queryset = Owner.objects.all()
-    serializer_class = OwnerSerializer
+            return Lead().get_single_result(query_params)
+        return Lead().get_by_components(query_params)
 
     def retrieve(self, request, pk=None):
-        queryset = Owner.objects.all()
-        owner = get_object_or_404(queryset, pk=pk)
+        if request.user.is_anonymous:
+            #return Response("You have to be logged in to view this resource", 401)
+            pass
 
-        if self.request.user in owner.users.all():
-            serializer = OwnerSerializer(owner)
+        queryset = Lead.objects.all()
+        lead = get_object_or_404(queryset, pk=pk)
+
+        if self.request.user in lead.users.all():
+            serializer = LeadSerializer(lead)
             return Response(serializer.data)
 
         query_params = self.request.GET
         if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
-            # TODO: Purchase the Owner data
-            pass
-        else:
-            return Response("Owner data available for purchase.", 402)
+            lead.generate_owner()
+            lead.users.add(request.user)
+            serializer = LeadSerializer(lead)
+            return Response(serializer.data)
 
-        serializer = OwnerSerializer(owner)
+        serializer = LeadLimitedSerializer(lead)
         return Response(serializer.data)

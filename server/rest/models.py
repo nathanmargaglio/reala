@@ -4,6 +4,7 @@ import requests
 from django.conf import settings
 from pprint import pprint
 from django.contrib.auth.models import User, Group
+from django.contrib.postgres.fields import JSONField
 
 
 class Parcel(models.Model):
@@ -156,13 +157,6 @@ class Parcel(models.Model):
 class Owner(models.Model):
     id = models.BigAutoField(primary_key=True)
     users = models.ManyToManyField(User)
-    # Owner Info
-    raw_name = models.CharField(default='', max_length=128)
-    first_name = models.CharField(default='', max_length=128)
-    last_name = models.CharField(default='', max_length=128)
+    estated = JSONField(default=None)
 
-    home = models.OneToOneField(Parcel, related_name="homeowner",
-                                null=True, on_delete=models.CASCADE)
-    phone = models.CharField(default='', max_length=128)
-    email = models.CharField(default='', max_length=128)
 

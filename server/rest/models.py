@@ -134,7 +134,7 @@ class Lead(models.Model):
         r = requests.get(get_url)
         return r.json()
 
-    def generate_owner(self, data):
+    def generate_owner(self):
         """
         Creates an Owner object and fills it with data
         :param data: a dict with Owner data
@@ -142,10 +142,18 @@ class Lead(models.Model):
 
         """
 
-        res = self.get_estated_data(self.formatted_address)
-
+        #res = self.get_estated_data(self.formatted_address)
+        res = {
+            'status': 'success',
+            'data': {
+                'something': 'there it is',
+                'something_else': None,
+                'or_this': 5
+            }
+        }
         if res['status'] == 'success':
-            self.estated = res['data']
+            print(res['data'])
+            self.estated = {}
             self.save()
             return self
         else:

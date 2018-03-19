@@ -44,17 +44,23 @@ class LeadViewSet(viewsets.ModelViewSet):
         return Lead().get_by_components(query_params)
 
     def retrieve(self, request, pk=None):
-        queryset = Lead.objects.all()
-        owner = get_object_or_404(queryset, pk=pk)
+        if request.user.is_anonymous:
+            #return Response("You have to be logged in to view this resource", 401)
+            pass
 
-        if self.request.user in owner.users.all():
-            serializer = LeadSerializer(owner)
+        queryset = Lead.objects.all()
+        lead = get_object_or_404(queryset, pk=pk)
+
+        if self.request.user in lead.users.all():
+            serializer = LeadSerializer(lead)
             return Response(serializer.data)
 
         query_params = self.request.GET
         if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
-            # TODO: Purchase the Owner data
-            pass
+            lead.generate_owner()
+            lead.users.add(request.user)
+            serializer = LeadSerializer(lead)
+            return Response(serializer.data)
 
-        serializer = LeadLimitedSerializer(owner)
+        serializer = LeadLimitedSerializer(lead)
         return Response(serializer.data)

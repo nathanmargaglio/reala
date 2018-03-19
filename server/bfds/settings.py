@@ -88,8 +88,12 @@ WSGI_APPLICATION = 'bfds.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
+
 # You'll need to setup a local PostgreSQL database
 # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04
+
+# You can dump/restore following this
+# https://devcenter.heroku.com/articles/heroku-postgres-import-export
 
 DATABASES = {
     'default': {
@@ -101,7 +105,7 @@ DATABASES = {
 
 # Update database configuration with $DATABASE_URL.
 
-if not dev_mode:
+if not os.environ['DEV_MODE']:
     import dj_database_url
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)

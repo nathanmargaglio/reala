@@ -34,13 +34,12 @@ class LeadViewSet(viewsets.ModelViewSet):
             return Lead().get_single_result(query_params)
         return Lead().get_by_components(query_params)
 
-    """
-        def retrieve(self, request, pk=None):
-        queryset = Owner.objects.all()
+    def retrieve(self, request, pk=None):
+        queryset = Lead.objects.all()
         owner = get_object_or_404(queryset, pk=pk)
 
         if self.request.user in owner.users.all():
-            serializer = OwnerSerializer(owner)
+            serializer = LeadSerializer(owner)
             return Response(serializer.data)
 
         query_params = self.request.GET
@@ -50,6 +49,5 @@ class LeadViewSet(viewsets.ModelViewSet):
         else:
             return Response("Owner data available for purchase.", 402)
 
-        serializer = OwnerSerializer(owner)
+        serializer = LeadSerializer(owner)
         return Response(serializer.data)
-    """

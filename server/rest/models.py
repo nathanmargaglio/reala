@@ -28,8 +28,8 @@ class Lead(models.Model):
     place_type = models.CharField(default='', max_length=128)
 
     # Owner Data
-    users = models.ManyToManyField(User)
-    estated = JSONField(default=None)
+    users = models.ManyToManyField(User, blank=True)
+    estated = JSONField(default=None, null=True)
 
     @staticmethod
     def get_by_components(data):

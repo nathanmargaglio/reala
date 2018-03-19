@@ -17,7 +17,6 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class LeadSerializer(serializers.ModelSerializer):
     address = serializers.CharField(write_only=True, required=False)
-    owner = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Lead

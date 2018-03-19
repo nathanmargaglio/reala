@@ -20,7 +20,8 @@ class LeadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lead
-        fields = '__all__'
+        fields = ['id', 'address', 'formatted_address', 'street_number', 'route', 'city', 'county', 'state',
+                  'postal_code', 'lat', 'lng', 'estated']
 
     def create(self, validated_data):
         lead = Lead()
@@ -30,3 +31,10 @@ class LeadSerializer(serializers.ModelSerializer):
             return lead
         else:
             raise serializers.ValidationError("address field required:  supply a raw address")
+
+
+class LeadLimitedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = ['id', 'formatted_address', 'street_number', 'route', 'city', 'county', 'state',
+                  'postal_code', 'lat', 'lng']

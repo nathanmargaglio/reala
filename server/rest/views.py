@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from rest.serializers import UserSerializer, GroupSerializer, LeadSerializer
+from rest.serializers import UserSerializer, GroupSerializer, \
+    LeadSerializer, LeadLimitedSerializer
 from rest.models import Lead
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -26,7 +27,15 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class LeadViewSet(viewsets.ModelViewSet):
     queryset = Lead.objects.all()
-    serializer_class = LeadSerializer
+    serializer_class = LeadLimitedSerializer
+
+    """
+    def get_serializer_class(self):
+        query_params = self.request.GET
+        if 'all' in query_params and query_params['all'] in ['true', 'True', 'TRUE']:
+            return LeadSerializer
+        return LeadLimitedSerializer
+    """
 
     def get_queryset(self):
         query_params = self.request.GET
@@ -46,8 +55,6 @@ class LeadViewSet(viewsets.ModelViewSet):
         if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
             # TODO: Purchase the Owner data
             pass
-        else:
-            return Response("Owner data available for purchase.", 402)
 
-        serializer = LeadSerializer(owner)
+        serializer = LeadLimitedSerializer(owner)
         return Response(serializer.data)

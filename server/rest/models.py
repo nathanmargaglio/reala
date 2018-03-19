@@ -92,6 +92,7 @@ class Lead(models.Model):
         """
 
         data = self.get_geocode_address(address)
+        print(data)
         address_components = data['results'][0]['address_components']
         formatted_address = data['results'][0]['formatted_address']
         geometry = data['results'][0]['geometry']
@@ -102,7 +103,7 @@ class Lead(models.Model):
             cv = comp['short_name']
             ct = comp['types'][0]
 
-            if ct == 'street_number': self.street_number = cv
+            if ct == 'street_number': self.street_number = int(cv)
             if ct == 'route': self.route = cv
             if ct == 'locality': self.city = cv
             if ct == 'administrative_area_level_2': self.county = cv
@@ -110,8 +111,8 @@ class Lead(models.Model):
             if ct == 'postal_code': self.postal_code = cv
 
         self.formatted_address = formatted_address
-        self.lat = geometry['location']['lat']
-        self.lng = geometry['location']['lng']
+        self.lat = float(geometry['location']['lat'])
+        self.lng = float(geometry['location']['lng'])
         self.place_id = place_id
         self.place_type = types[0]
 

@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
   constructor(private restangular: Restangular) { }
 
   ngOnInit() {
-    this.parcels_api = this.restangular.all('parcels');
+    this.parcels_api = this.restangular.all('leads');
     this.loadParcels();
   }
 

@@ -89,12 +89,6 @@ WSGI_APPLICATION = 'bfds.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-# You'll need to setup a local PostgreSQL database
-# https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04
-
-# You can dump/restore following this
-# https://devcenter.heroku.com/articles/heroku-postgres-import-export
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -103,12 +97,19 @@ DATABASES = {
     }
 }
 
-# Update database configuration with $DATABASE_URL.
+if os.environ['ENVIRONMENT'] == 'DEVELOPMENT':
+    # You'll need to setup a local PostgreSQL database
+    # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04
 
-if not os.environ['DEV_MODE']:
+    # You can dump/restore following this
+    # https://devcenter.heroku.com/articles/heroku-postgres-import-export
+    pass
+else:
+    # Update database configuration with $DATABASE_URL.
     import dj_database_url
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

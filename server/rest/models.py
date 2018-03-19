@@ -142,18 +142,10 @@ class Lead(models.Model):
 
         """
 
-        #res = self.get_estated_data(self.formatted_address)
-        res = {
-            'status': 'success',
-            'data': {
-                'something': 'there it is',
-                'something_else': None,
-                'or_this': 5
-            }
-        }
+        res = self.get_estated_data(self.formatted_address)
+
         if res['status'] == 'success':
-            print(res['data'])
-            self.estated = {}
+            self.estated = res['data']
             self.save()
             return self
         else:

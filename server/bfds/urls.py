@@ -7,8 +7,7 @@ from rest import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'parcels', views.ParcelViewSet)
-router.register(r'owners', views.OwnerViewSet)
+router.register(r'leads', views.LeadViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

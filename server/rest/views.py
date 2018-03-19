@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from rest.serializers import UserSerializer, GroupSerializer, ParcelSerializer, OwnerSerializer
-from rest.models import Owner, Parcel
+from rest.serializers import UserSerializer, GroupSerializer, LeadSerializer
+from rest.models import Lead
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 import json
@@ -24,22 +24,18 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
-class ParcelViewSet(viewsets.ModelViewSet):
-    queryset = Parcel.objects.all()
-    serializer_class = ParcelSerializer
+class LeadViewSet(viewsets.ModelViewSet):
+    queryset = Lead.objects.all()
+    serializer_class = LeadSerializer
 
     def get_queryset(self):
         query_params = self.request.GET
         if 'single' in query_params and query_params['single'] in ['true', 'True', 'TRUE']:
-            return Parcel().get_single_result(query_params)
-        return Parcel().get_by_components(query_params)
+            return Lead().get_single_result(query_params)
+        return Lead().get_by_components(query_params)
 
-
-class OwnerViewSet(viewsets.ModelViewSet):
-    queryset = Owner.objects.all()
-    serializer_class = OwnerSerializer
-
-    def retrieve(self, request, pk=None):
+    """
+        def retrieve(self, request, pk=None):
         queryset = Owner.objects.all()
         owner = get_object_or_404(queryset, pk=pk)
 
@@ -56,3 +52,4 @@ class OwnerViewSet(viewsets.ModelViewSet):
 
         serializer = OwnerSerializer(owner)
         return Response(serializer.data)
+    """

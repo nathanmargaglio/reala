@@ -7,14 +7,14 @@ from django.contrib.auth.models import User, Group
 from django.contrib.postgres.fields import JSONField
 
 
-class Parcel(models.Model):
+class Lead(models.Model):
 
     """
     This model provides columns and methods for individual real estate properties.
 
     """
 
-    id = models.BigAutoField(primary_key=True)
+    # Parcel Data
     formatted_address = models.CharField(default='', max_length=128)
     street_number = models.IntegerField(default=None, null=True)
     route = models.CharField(default='', max_length=128)
@@ -27,12 +27,9 @@ class Parcel(models.Model):
     place_id = models.CharField(default='', max_length=128)
     place_type = models.CharField(default='', max_length=128)
 
-    owner = models.ForeignKey(
-        'Owner',
-        default=None,
-        null=True,
-        on_delete=models.CASCADE,
-    )
+    # Owner Data
+    users = models.ManyToManyField(User)
+    estated = JSONField(default=None)
 
     @staticmethod
     def get_by_components(data):
@@ -42,10 +39,10 @@ class Parcel(models.Model):
         :return: Matched queried Parcel objects
 
         """
-        parcels = Parcel.objects.all()
+        parcels = Lead.objects.all()
 
         for key in data:
-            if key in [f.name for f in Parcel._meta.get_fields()]:
+            if key in [f.name for f in Lead._meta.get_fields()]:
                 parcels = parcels.filter(**{key+'__icontains': data[key]})
 
         return parcels
@@ -60,10 +57,10 @@ class Parcel(models.Model):
         """
 
         components = {}
-        for field in [f.name for f in Parcel._meta.get_fields()]:
+        for field in [f.name for f in Lead._meta.get_fields()]:
             if field in data:
                 components[field] = data[field]
-                parcels = Parcel.get_by_components(components)
+                parcels = Lead.get_by_components(components)
 
                 if len(parcels) == 1:
                     return parcels
@@ -144,21 +141,11 @@ class Parcel(models.Model):
 
         """
 
-        o = Owner()
-
         res = self.get_estated_data(self.formatted_address)
 
         if res['status'] == 'success':
-            o.estated = res['data']
-            self.owner = o
-            o.save()
+            self.estated = res['data']
             self.save()
-            return o
+            return self
         else:
             return None
-
-
-class Owner(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    users = models.ManyToManyField(User)
-    estated = JSONField(default=None)

@@ -32,7 +32,7 @@ export class AuthService {
     body.append('username', username);
     body.append('password', password);
     body.append('grant_type', 'password');
-    
+
     this.http.post(
       environment.apiUrl + '/o/token/',
       body,

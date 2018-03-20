@@ -5,10 +5,5 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8000',
-  auth: {
-    clientID: 'PgOjTaPIA9nCxQbEnC4nSVW9Mvp14d0vBOB2XAfH',
-    domain: 'http://localhost:8000/o/',
-    scope: 'openid profile email'
-  }
+  apiUrl: 'http://localhost:8000'
 };

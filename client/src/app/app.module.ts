@@ -30,6 +30,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 export function RestangularConfigFactory (RestangularProvider) {
   RestangularProvider.setBaseUrl(`${environment.apiUrl}/api`);
   RestangularProvider.setRequestSuffix('/');
+  RestangularProvider.setDefaultHeaders({});
   RestangularProvider.setResponseExtractor(function(response, operation, what, url) {
     var newResponse;
     if (operation === "getList") {
@@ -79,7 +80,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     },
     LeadService,
-    AuthService
+    AuthService,
+    Restangular
   ],
   bootstrap: [AppComponent]
 })

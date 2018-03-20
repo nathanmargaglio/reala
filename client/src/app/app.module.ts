@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
 import { ParticlesModule } from 'angular-particle';
 import { HttpClientModule } from '@angular/common/http';
+import { LeadService } from './lead.service'
+import { AuthService } from './auth/auth.service';
 
 // Material
 import { MatButtonModule } from '@angular/material/button';
@@ -75,7 +77,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
-    }
+    },
+    LeadService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

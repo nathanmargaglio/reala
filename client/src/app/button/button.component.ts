@@ -17,17 +17,19 @@ export class ButtonComponent implements OnInit {
   reloadParcels = new EventEmitter<boolean>();
 
   ngOnInit() {
-    this.parcels_api = this.restangular.all('parcels');
+    this.parcels_api = this.restangular.all('leads');
     this.parcels_api.getList().subscribe(data => {
       this.parcels = data;
     })
   }
 
   onSubmit(){
-    let data = {"address": this.address};
-    this.parcels_api.post(data).subscribe(d => {
-      this.reloadParcels.emit(true);
-    });
+    //let data = {"address": this.address};
+    //this.parcels_api.post(data).subscribe(d => {
+    //  this.reloadParcels.emit(true);
+    //});
+
+    this.reloadParcels.emit(true);
   }
 
 }

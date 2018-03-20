@@ -10,5 +10,15 @@
       </mat-list-item>
     </mat-list>
   </mat-card>
-  <mat-card class="detail-card">2</mat-card>
+  <mat-card class="detail-card">
+    <form (ngSubmit)="login()">
+      <mat-form-field>
+        <input name="username" matInput placeholder="username" [(ngModel)]="username" #ctrl="ngModel">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="password" name="password" matInput placeholder="password" [(ngModel)]="password" #ctrl="ngModel">
+      </mat-form-field>
+      <button type="submit" mat-raised-button>login</button>
+    </form>
+  </mat-card>
 </div>

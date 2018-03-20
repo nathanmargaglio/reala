@@ -4,5 +4,8 @@
   "scripts": {
     "start": "npm start --prefix client",
     "postinstall": "npm install --prefix client"
+  },
+  "engines": {
+    "node": "9.1.0"
   }
 }

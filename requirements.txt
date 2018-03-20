@@ -4,9 +4,11 @@ click==6.7
 dj-database-url==0.4.2
 Django==2.0.2
 django-cors-headers==2.2.0
+django-oauth-toolkit==1.0.0
 djangorestframework==3.7.7
 gunicorn==19.7.1
 idna==2.6
+oauthlib==2.0.7
 psycopg2==2.7.4
 psycopg2-binary==2.7.4
 python-dotenv==0.7.1

@@ -14,5 +14,6 @@ router.register(r'leads', views.LeadViewSet)
 urlpatterns = [
     path('', include('frontend.urls')),
     url(r'^api/', include(router.urls)),
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

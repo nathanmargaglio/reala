@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
+from rest_framework import permissions, viewsets
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
 from rest.serializers import UserSerializer, GroupSerializer, \
     LeadSerializer, LeadLimitedSerializer
 from rest.models import Lead
@@ -26,6 +27,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 class LeadViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Lead.objects.all()
     serializer_class = LeadLimitedSerializer
 

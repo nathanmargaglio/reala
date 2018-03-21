@@ -8,7 +8,7 @@ export class AuthService {
 
   access_token: string;
   refresh_token: string;
-  expires_at: Date;
+  expires_at: number;
   clientID: string;
   rest;
 
@@ -28,7 +28,12 @@ export class AuthService {
 
     if (localStorage.getItem('access_token')) {
       this.access_token = localStorage.getItem('access_token');
-      this.rest.setDefaultHeaders({Authorization: "Bearer " + this.access_token});
+      this.refresh_token = localStorage.getItem('refresh_token');
+      this.expires_at = parseInt(localStorage.getItem('expires_at'));
+
+      if (this.isLoggedIn()) {
+        this.rest.setDefaultHeaders({Authorization: "Bearer " + this.access_token});
+      }
     }
   }
 
@@ -51,13 +56,18 @@ export class AuthService {
     ).subscribe(data => {
       this.access_token = data['access_token'];
       this.refresh_token = data['refresh_token'];
-      let t = new Date();
-      t.setSeconds(t.getSeconds() + data['expires_in']);
-      this.expires_at = t;
+      let t = Math.floor(Date.now() / 1000);
+      this.expires_at = t + data['expires_in'];
       this.rest.setDefaultHeaders({Authorization: "Bearer " + this.access_token});
 
       localStorage.setItem('access_token', this.access_token);
       localStorage.setItem('refresh_token', this.refresh_token);
+      localStorage.setItem('expires_at', this.expires_at + '');
     })
+  }
+
+  isLoggedIn() {
+    if (this.expires_at === null) return false;
+    return this.expires_at > Math.floor(Date.now() / 1000);
   }
 }

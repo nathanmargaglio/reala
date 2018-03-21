@@ -5,7 +5,7 @@
   <mat-card class="list-card" [perfectScrollbar]="scrollConfig">
     <mat-list>
       <mat-list-item *ngFor="let parcel of parcels">
-        {{parcel.formatted_address}}
+        <button mat-raised-button>{{parcel.formatted_address}}</button>
         <mat-divider></mat-divider>
       </mat-list-item>
     </mat-list>

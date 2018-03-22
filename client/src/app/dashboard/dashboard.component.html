@@ -1,31 +1,30 @@
 <mat-card class="header-card">
   <app-button (reloadParcels)="loadParcels()"></app-button>
 </mat-card>
-<div class="list-container">
+
+<div class="list-container" *ngIf="authService.isLoggedIn()">
   <mat-card class="list-card" [perfectScrollbar]="scrollConfig">
     <mat-list>
       <mat-list-item *ngFor="let parcel of parcels">
         <button mat-raised-button (click)="loadLeadDetails(parcel.id)">{{parcel.formatted_address}}</button>
-        <mat-divider></mat-divider>
       </mat-list-item>
     </mat-list>
   </mat-card>
-  <ng-container *ngIf="!authService.isLoggedIn()">
-    <mat-card class="detail-card">
-      <form (ngSubmit)="login()">
-        <mat-form-field>
-          <input name="username" matInput placeholder="username" [(ngModel)]="username" #ctrl="ngModel">
-        </mat-form-field>
-        <mat-form-field>
-          <input type="password" name="password" matInput placeholder="password" [(ngModel)]="password" #ctrl="ngModel">
-        </mat-form-field>
-        <button type="submit" mat-raised-button>login</button>
-      </form>
-    </mat-card>
-  </ng-container>
-  <ng-container *ngIf="authService.isLoggedIn()">
-    <mat-card class="detail-card" [perfectScrollbar]="scrollConfig">
-      <app-lead></app-lead>
-    </mat-card>
-  </ng-container>
+  <mat-card class="detail-card" [perfectScrollbar]="scrollConfig">
+    <app-lead></app-lead>
+  </mat-card>
+</div>
+
+<div class="login-container" *ngIf="!authService.isLoggedIn()">
+  <mat-card class="login-card">
+    <form (ngSubmit)="login()">
+      <mat-form-field>
+        <input name="username" matInput placeholder="username" [(ngModel)]="username" #ctrl="ngModel">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="password" name="password" matInput placeholder="password" [(ngModel)]="password" #ctrl="ngModel">
+      </mat-form-field>
+      <button type="submit" mat-raised-button>login</button>
+    </form>
+  </mat-card>
 </div>

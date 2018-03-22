@@ -8,12 +8,27 @@ mat-card {
   height: 100%;
 }
 
+.login-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-container, form {
+  width: 100%;
+  text-align: center;
+}
+
+.login-container, mat-form-field {
+  width: 100%;
+  max-width: 300px;
+}
+
 .list-container > mat-card {
   flex: 1;
 }
 
 mat-card.detail-card {
-  max-width: 25%;
+  max-width: 50%;
 }
 
 @media only screen and (max-width: 768px) {

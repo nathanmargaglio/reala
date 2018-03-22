@@ -11,6 +11,10 @@ mat-card {
 .login-container {
   display: flex;
   flex-direction: column;
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .login-container, form {

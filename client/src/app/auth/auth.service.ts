@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { environment } from './../../environments/environment';
-import {Restangular, RestangularModule} from "ngx-restangular";
+import { Restangular, RestangularModule } from "ngx-restangular";
 
 @Injectable()
 export class AuthService {
@@ -53,17 +53,19 @@ export class AuthService {
       {
         headers: headers
       }
-    ).subscribe(data => {
-      this.access_token = data['access_token'];
-      this.refresh_token = data['refresh_token'];
-      let t = Math.floor(Date.now() / 1000);
-      this.expires_at = t + data['expires_in'];
-      this.rest.setDefaultHeaders({Authorization: "Bearer " + this.access_token});
+    ).subscribe((data) => this.setLoginData(data));
+  }
 
-      localStorage.setItem('access_token', this.access_token);
-      localStorage.setItem('refresh_token', this.refresh_token);
-      localStorage.setItem('expires_at', this.expires_at + '');
-    })
+  setLoginData(data) {
+    this.access_token = data['access_token'];
+    this.refresh_token = data['refresh_token'];
+    let t = Math.floor(Date.now() / 1000);
+    this.expires_at = t + data['expires_in'];
+    this.rest.setDefaultHeaders({Authorization: "Bearer " + this.access_token});
+
+    localStorage.setItem('access_token', this.access_token);
+    localStorage.setItem('refresh_token', this.refresh_token);
+    localStorage.setItem('expires_at', this.expires_at + '');
   }
 
   isLoggedIn() {

@@ -21,23 +21,26 @@ import {MatDividerModule} from '@angular/material/divider';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { AppComponent } from './app.component';
 import { ButtonComponent } from './button/button.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LeadComponent } from './lead/lead.component';
 
 export function RestangularConfigFactory (RestangularProvider) {
   RestangularProvider.setBaseUrl(`${environment.apiUrl}/api`);
   RestangularProvider.setRequestSuffix('/');
   RestangularProvider.setDefaultHeaders({});
   RestangularProvider.setResponseExtractor(function(response, operation, what, url) {
-    var newResponse;
+    let newResponse;
     if (operation === "getList") {
-      newResponse = response.results;
-      newResponse.count = response.count;
-      newResponse.next = response.next;
-      newResponse.previous = response.previous;
+      if (response.results) {
+        newResponse = response.results;
+        newResponse.count = response.count;
+        newResponse.next = response.next;
+        newResponse.previous = response.previous;
+      }
     } else {
       newResponse = response;
     }
@@ -53,7 +56,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   declarations: [
     AppComponent,
     ButtonComponent,
-    DashboardComponent
+    DashboardComponent,
+    LeadComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +76,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatFormFieldModule,
     MatCardModule,
     MatGridListModule,
-    MatListModule
+    MatListModule,
+    MatExpansionModule
   ],
   providers: [
     {

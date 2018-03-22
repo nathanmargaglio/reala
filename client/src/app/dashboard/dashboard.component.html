@@ -10,7 +10,7 @@
       </mat-list-item>
     </mat-list>
   </mat-card>
-  <ng-template *ngIf="!authService.isLoggedIn(); else elseBlock">
+  <ng-container *ngIf="!authService.isLoggedIn()">
     <mat-card class="detail-card">
       <form (ngSubmit)="login()">
         <mat-form-field>
@@ -22,10 +22,10 @@
         <button type="submit" mat-raised-button>login</button>
       </form>
     </mat-card>
-  </ng-template>
-  <ng-template #elseBlock>
-    <mat-card class="detail-card">
+  </ng-container>
+  <ng-container *ngIf="authService.isLoggedIn()">
+    <mat-card class="detail-card" [perfectScrollbar]="scrollConfig">
       <app-lead></app-lead>
     </mat-card>
-  </ng-template>
+  </ng-container>
 </div>

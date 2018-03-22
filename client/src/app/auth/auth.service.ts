@@ -37,7 +37,7 @@ export class AuthService {
     }
   }
 
-  login(username, password) {
+  login(username, password, callback=null) {
     let headers = new HttpHeaders({
       "Authorization": "Basic " + btoa(this.clientID + ":")}
       );
@@ -53,10 +53,10 @@ export class AuthService {
       {
         headers: headers
       }
-    ).subscribe((data) => this.setLoginData(data));
+    ).subscribe((data) => this.setLoginData(data, callback));
   }
 
-  setLoginData(data) {
+  setLoginData(data, callback=null) {
     this.access_token = data['access_token'];
     this.refresh_token = data['refresh_token'];
     let t = Math.floor(Date.now() / 1000);
@@ -66,6 +66,10 @@ export class AuthService {
     localStorage.setItem('access_token', this.access_token);
     localStorage.setItem('refresh_token', this.refresh_token);
     localStorage.setItem('expires_at', this.expires_at + '');
+
+    if (callback) {
+      callback();
+    }
   }
 
   isLoggedIn() {

@@ -51,7 +51,9 @@ export class DashboardComponent implements OnInit {
   }
 
   login() {
-    this.authService.login(this.username, this.password);
+    this.authService.login(this.username, this.password, () => {
+      this.loadParcels()
+    });
   }
 
 }

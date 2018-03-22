@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.http.get('static/assets/particles/particlesjs-config-default.json').subscribe(data => {
+    this.http.get('static/assets/particles/particlesjs-config.json').subscribe(data => {
       this.particlesParams = data;
       this.particlesInit = true;
     });
@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
       'position': 'fixed',
       'width': '100%',
       'height': '100%',
-      'z-index': -1,
+      'z-index': 0,
       'top': 0,
       'left': 0,
       'right': 0,

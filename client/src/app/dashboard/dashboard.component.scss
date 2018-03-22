@@ -15,20 +15,20 @@ mat-card {
   top: 25%;
   left: 50%;
   transform: translateX(-50%);
-}
+  form {
+    max-width: 300px;
+    width: 100%;
+    text-align: center;
+  }
 
-.login-container, form {
-  width: 100%;
-  text-align: center;
-}
+  mat-form-field {
+    width: 100%;
+    max-width: 300px;
+  }
 
-.login-container, mat-form-field {
-  width: 100%;
-  max-width: 300px;
-}
-
-.list-container > mat-card {
-  flex: 1;
+  > mat-card {
+    flex: 1;
+  }
 }
 
 mat-card.detail-card {

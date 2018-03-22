@@ -8,7 +8,7 @@ import {LeadComponent} from "../lead/lead.component";
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  styleUrls: ['./dashboard.component.scss'],
   providers: [ AuthService ]
 })
 export class DashboardComponent implements OnInit {

@@ -13,7 +13,7 @@ export class ButtonComponent implements OnInit {
   constructor(private leadService: LeadService) { }
 
   @Output()
-  reloadParcels = new EventEmitter();
+  reloadLeads = new EventEmitter();
 
   ngOnInit() {
 
@@ -22,7 +22,7 @@ export class ButtonComponent implements OnInit {
   onSubmit(){
     this.leadService.postLead(this.address).subscribe(data => {
         console.log(data);
-        this.reloadParcels.emit();
+        this.reloadLeads.emit();
       })
   }
 

@@ -27,6 +27,7 @@ import { AppComponent } from './app.component';
 import { ButtonComponent } from './button/button.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LeadComponent } from './lead/lead.component';
+import { PropertyComponent } from './property/property.component';
 
 export function RestangularConfigFactory (RestangularProvider) {
   RestangularProvider.setBaseUrl(`${environment.apiUrl}/api`);
@@ -57,7 +58,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppComponent,
     ButtonComponent,
     DashboardComponent,
-    LeadComponent
+    LeadComponent,
+    PropertyComponent
   ],
   imports: [
     BrowserModule,

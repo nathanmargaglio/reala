@@ -1,18 +1,18 @@
 <ng-container *ngIf="authService.isLoggedIn()">
   <mat-card class="header-card">
-    <app-button (reloadParcels)="loadParcels()"></app-button>
+    <app-button (reloadLeads)="loadLeads()"></app-button>
   </mat-card>
 
   <div class="list-container">
     <mat-card class="list-card" [perfectScrollbar]="scrollConfig">
       <mat-list>
-        <mat-list-item *ngFor="let parcel of parcels">
-          <button mat-raised-button (click)="loadLeadDetails(parcel.id)">{{parcel.formatted_address}}</button>
+        <mat-list-item *ngFor="let lead of leads">
+          <app-lead [formatted_address]="lead.formatted_address"></app-lead>
         </mat-list-item>
       </mat-list>
     </mat-card>
-    <mat-card class="detail-card" [perfectScrollbar]="scrollConfig">
-      <app-lead></app-lead>
+    <mat-card *ngIf="activeProperty" class="detail-card" [perfectScrollbar]="scrollConfig">
+      <app-property [id]="activeProperty"></app-property>
     </mat-card>
   </div>
 </ng-container>

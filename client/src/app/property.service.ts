@@ -6,32 +6,21 @@ import { AuthService } from "./auth/auth.service";
 import {PERFECT_SCROLLBAR_CONFIG} from "ngx-perfect-scrollbar";
 
 @Injectable()
-export class LeadService {
+export class PropertyService {
 
   api;
   @Output()
   loadedLeads = new EventEmitter<object>();
 
   constructor(private http: HttpClient, private restangular: Restangular){
-    this.api = this.restangular.all('leads');
+    this.api = this.restangular.all('properties');
   }
 
-  getLeads() {
+  getProperties() {
     return this.api.getList();
   }
 
-  getLeadDetails(id) {
-    return this.restangular.one('leads', id).get();
-  }
-
-  purchaseLeadDetails(id) {
-    let post = this.restangular.one('leads', id);
-    post.customGET('', {purchase: 'True'});
-    return post.get();
-  }
-
-  postLead(address) {
-    console.log(address);
-    return this.api.post({address: address});
+  getPropertyDetails(id) {
+    return this.restangular.one('properties', id).get();
   }
 }

@@ -122,6 +122,16 @@ class Lead(models.Model):
 
         return self
 
+    def purchase_property_data(self):
+        p = Property()
+        p.is_premium = True
+        p.set_premium_data(self.formatted_address)
+        p.save()
+        self.properties.add(p)
+        self.save()
+        p.save()
+        return p
+
 
 class LeadData(models.Model):
     """
@@ -129,7 +139,6 @@ class LeadData(models.Model):
 
     """
 
-    users = models.ManyToManyField(User, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -161,7 +170,7 @@ class Property(LeadData):
         r = requests.get(get_url)
         return r.json()
 
-    def set_premium_data(self):
+    def set_premium_data(self, formatted_address):
         """
         Creates an Owner object and fills it with data
         :param data: a dict with Owner data
@@ -169,7 +178,7 @@ class Property(LeadData):
 
         """
 
-        res = self.get_premium_data(self.formatted_address)
+        res = self.get_premium_data(formatted_address)
 
         if res['status'] == 'success':
             self.premium_data = res['data']

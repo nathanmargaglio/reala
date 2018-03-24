@@ -41,18 +41,19 @@ class LeadViewSet(viewsets.ModelViewSet):
         queryset = Lead.objects.all()
         lead = get_object_or_404(queryset, pk=pk)
 
-        if self.request.user in lead.users.all():
-            serializer = LeadSerializer(lead)
-            return Response(serializer.data)
-
-        query_params = self.request.GET
+        query_params = request.GET
         if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
-            lead.users.add(request.user)
-            serializer = LeadSerializer(lead)
+            property = lead.purchase_property_data()
+            print(property)
+            serializer = PropertySerializer(property)
             return Response(serializer.data)
         else:
             "they don't own it"
             pass
+
+        if self.request.user in lead.users.all():
+            serializer = LeadSerializer(lead)
+            return Response(serializer.data)
 
         serializer = LeadSerializer(lead)
         return Response(serializer.data)

@@ -124,12 +124,10 @@ class Lead(models.Model):
 
     def purchase_property_data(self):
         p = Property()
-        p.is_premium = True
         p.set_premium_data(self.formatted_address)
         p.save()
         self.properties.add(p)
         self.save()
-        p.save()
         return p
 
 
@@ -143,8 +141,7 @@ class LeadData(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     is_premium = models.BooleanField()
-    premium_data = JSONField(default=None, null=True)
-    user_data = JSONField(default=None, null=True)
+    data = JSONField(default=None, null=True)
 
 
 class Property(LeadData):
@@ -178,10 +175,11 @@ class Property(LeadData):
 
         """
 
-        res = self.get_premium_data(formatted_address)
+        res = self.get_data(formatted_address)
 
         if res['status'] == 'success':
-            self.premium_data = res['data']
+            self.data = res['data']
+            self.is_premium = True
             self.save()
             return self
         else:

@@ -31,11 +31,6 @@ class LeadSerializer(serializers.ModelSerializer):
         else:
             raise serializers.ValidationError("address field required:  supply a raw address")
 
-    def update(self, instance, validated_data):
-        print(instance)
-        print(validated_data)
-        return instance
-
 
 class PropertySerializer(serializers.ModelSerializer):
     class Meta:

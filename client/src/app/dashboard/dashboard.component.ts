@@ -47,9 +47,13 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  loadProperty(id) {
-    this.activeProperty = id;
-    this.property.loadPropertyDetails(id);
+  loadProperty(properties) {
+    console.log(properties);
+    if (properties) {
+      // TODO: Load all Property data
+      this.activeProperty = properties[0];
+      this.property.loadPropertyDetails(properties[0]);
+    }
   }
 
   login() {

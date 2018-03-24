@@ -8,6 +8,7 @@ import { ParticlesModule } from 'angular-particle';
 import { HttpClientModule } from '@angular/common/http';
 import { LeadService } from './lead.service'
 import { AuthService } from './auth/auth.service';
+import { PropertyService } from "./property.service";
 
 // Material
 import { MatButtonModule } from '@angular/material/button';
@@ -87,6 +88,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     },
     LeadService,
+    PropertyService,
     AuthService,
     Restangular
   ],

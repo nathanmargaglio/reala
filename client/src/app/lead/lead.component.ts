@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
 import {LeadService} from "../lead.service";
 
 @Component({
@@ -9,8 +9,8 @@ import {LeadService} from "../lead.service";
 export class LeadComponent implements OnInit {
 
   Object = Object;
-  leadData;
-  @Input() formatted_address: string;
+  @Input() leadData: object;
+  @Output() loadProperty: EventEmitter<number> = new EventEmitter();
 
   constructor(public leadService: LeadService) { }
 
@@ -18,11 +18,11 @@ export class LeadComponent implements OnInit {
   }
 
   purchaseLeadDetails(id) {
-    this.leadService.purchaseLeadDetails(id);
+    //this.leadService.purchaseLeadDetails(id);
   }
 
-  loadProperties(){
-    console.log("!");
+  emitProperty(){
+    this.loadProperty.emit(this.leadData['properties']);
   }
 
   loadLeadDetails(id) {

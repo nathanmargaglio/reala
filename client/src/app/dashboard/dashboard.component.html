@@ -7,12 +7,15 @@
     <mat-card class="list-card" [perfectScrollbar]="scrollConfig">
       <mat-list>
         <mat-list-item *ngFor="let lead of leads">
-          <app-lead [formatted_address]="lead.formatted_address"></app-lead>
+          <app-lead
+            [leadData]="lead"
+            (loadProperty)="loadProperty($event)"
+          ></app-lead>
         </mat-list-item>
       </mat-list>
     </mat-card>
-    <mat-card *ngIf="activeProperty" class="detail-card" [perfectScrollbar]="scrollConfig">
-      <app-property [id]="activeProperty"></app-property>
+    <mat-card class="detail-card" [perfectScrollbar]="scrollConfig">
+      <app-property></app-property>
     </mat-card>
   </div>
 </ng-container>

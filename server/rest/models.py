@@ -1,10 +1,12 @@
 from django.db import models
 import os
+import json
 import requests
 from django.conf import settings
 from pprint import pprint
 from django.contrib.auth.models import User, Group
 from django.contrib.postgres.fields import JSONField
+from piplapis.search import SearchAPIRequest
 
 
 class Lead(models.Model):
@@ -130,6 +132,15 @@ class Lead(models.Model):
         self.save()
         return p
 
+    def purchase_contact_data(self, raw_address, raw_name):
+        c = Contact()
+        c.set_premium_data(raw_address, raw_name)
+        c.save()
+
+        self.contacts.add(c)
+        self.save()
+        return c
+
 
 class LeadData(models.Model):
     """
@@ -194,22 +205,25 @@ class Contact(LeadData):
     """
 
     @staticmethod
-    def get_premium_data(formatted_address):
+    def get_premium_data(raw_address, raw_name):
         """
-        Get Property info via Estated API
-        :param formatted_address: a string, the address formatted from components (e.g., '123 Fake St, Buffalo, NY')
+        Get Contact info from Pipl API
+        :param raw_address: string, a formatted address
+        :param raw_name: string, a formatted name (first and last)
         :return: a dictionary representing the JSON response from the Estated Property API
 
         """
 
-        url_address = formatted_address.replace(' ', '+')
-        get_url = "https://estated.com/api/property?token={}&conjoined_address={}"\
-            .format(settings.ESTATED_API_KEY, url_address)
+        request = SearchAPIRequest(email=u"clark.kent@example.com",
+                                   match_requirements=u'name and emails and phones',
+                                   minimum_match=1.0,
+                                   api_key=settings.PIPL_API_KEY
+                                   )
+        response = request.send()
 
-        r = requests.get(get_url)
-        return r.json()
+        return json.loads(response.raw_json)
 
-    def set_premium_data(self):
+    def set_premium_data(self, raw_address, raw_name):
         """
         Creates an Owner object and fills it with data
         :param data: a dict with Owner data
@@ -217,10 +231,11 @@ class Contact(LeadData):
 
         """
 
-        res = self.get_estated_data(self.formatted_address)
+        res = self.get_premium_data(raw_address, raw_name)
 
-        if res['status'] == 'success':
-            self.estated = res['data']
+        if res['@persons_count'] == 1:
+            self.data = res['person']
+            self.is_premium = True
             self.save()
             return self
         else:

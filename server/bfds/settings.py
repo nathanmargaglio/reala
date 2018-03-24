@@ -172,4 +172,5 @@ STATICFILES_DIRS = (
 
 GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY']
 ESTATED_API_KEY = os.environ['ESTATED_API_KEY']
+PIPL_API_KEY = os.environ['PIPL_API_KEY']
 CLIENT_ID = os.environ['CLIENT_ID']

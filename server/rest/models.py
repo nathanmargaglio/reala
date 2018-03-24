@@ -14,8 +14,15 @@ class Lead(models.Model):
 
     """
 
-    # Parcel Data
-    formatted_address = models.CharField(default='', max_length=128)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    users = models.ManyToManyField(User, blank=True)
+    properties = models.ManyToManyField('Property', blank=True)
+    contacts = models.ManyToManyField('Contact', blank=True)
+
+    # Address Data
+    formatted_address = models.CharField(default='', unique=True, max_length=128)
     street_number = models.IntegerField(default=None, null=True)
     route = models.CharField(default='', max_length=128)
     city = models.CharField(default='', max_length=128)
@@ -27,9 +34,6 @@ class Lead(models.Model):
     place_id = models.CharField(default='', max_length=128)
     place_type = models.CharField(default='', max_length=128)
 
-    # Owner Data
-    users = models.ManyToManyField(User, blank=True)
-    estated = JSONField(default=None, null=True)
 
     @staticmethod
     def get_by_components(data):
@@ -118,8 +122,31 @@ class Lead(models.Model):
 
         return self
 
+
+class LeadData(models.Model):
+    """
+    This model provides columns and methods for data that's associated with Lead entries.
+
+    """
+
+    users = models.ManyToManyField(User, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    is_premium = models.BooleanField()
+    premium_data = JSONField(default=None, null=True)
+    user_data = JSONField(default=None, null=True)
+
+
+class Property(LeadData):
+
+    """
+    This model provides columns and methods for Property data.
+
+    """
+
     @staticmethod
-    def get_estated_data(formatted_address):
+    def get_premium_data(formatted_address):
         """
         Get Property info via Estated API
         :param formatted_address: a string, the address formatted from components (e.g., '123 Fake St, Buffalo, NY')
@@ -134,7 +161,48 @@ class Lead(models.Model):
         r = requests.get(get_url)
         return r.json()
 
-    def generate_owner(self):
+    def set_premium_data(self):
+        """
+        Creates an Owner object and fills it with data
+        :param data: a dict with Owner data
+        :return: newly generated Owner object
+
+        """
+
+        res = self.get_premium_data(self.formatted_address)
+
+        if res['status'] == 'success':
+            self.premium_data = res['data']
+            self.save()
+            return self
+        else:
+            return None
+
+
+class Contact(LeadData):
+
+    """
+    This model provides columns and methods for contact information.
+
+    """
+
+    @staticmethod
+    def get_premium_data(formatted_address):
+        """
+        Get Property info via Estated API
+        :param formatted_address: a string, the address formatted from components (e.g., '123 Fake St, Buffalo, NY')
+        :return: a dictionary representing the JSON response from the Estated Property API
+
+        """
+
+        url_address = formatted_address.replace(' ', '+')
+        get_url = "https://estated.com/api/property?token={}&conjoined_address={}"\
+            .format(settings.ESTATED_API_KEY, url_address)
+
+        r = requests.get(get_url)
+        return r.json()
+
+    def set_premium_data(self):
         """
         Creates an Owner object and fills it with data
         :param data: a dict with Owner data
@@ -150,3 +218,4 @@ class Lead(models.Model):
             return self
         else:
             return None
+

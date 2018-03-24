@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from rest.models import Lead
+from rest.models import Lead, Property, Contact
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -16,19 +16,11 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class LeadSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Lead
-        fields = ['id','formatted_address', 'street_number', 'route', 'city', 'county', 'state',
-                  'postal_code', 'lat', 'lng', 'estated']
-
-
-class LeadLimitedSerializer(serializers.ModelSerializer):
     address = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = Lead
-        fields = ['id',  'address', 'formatted_address', 'street_number', 'route', 'city', 'county', 'state',
-                  'postal_code', 'lat', 'lng']
+        fields = '__all__'
 
     def create(self, validated_data):
         lead = Lead()
@@ -38,3 +30,20 @@ class LeadLimitedSerializer(serializers.ModelSerializer):
             return lead
         else:
             raise serializers.ValidationError("address field required:  supply a raw address")
+
+    def update(self, instance, validated_data):
+        print(instance)
+        print(validated_data)
+        return instance
+
+
+class PropertySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Property
+        fields = '__all__'
+
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = '__all__'

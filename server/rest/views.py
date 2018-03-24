@@ -3,8 +3,8 @@ from django.contrib.auth.models import User, Group
 from rest_framework import permissions, viewsets
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
 from rest.serializers import UserSerializer, GroupSerializer, \
-    LeadSerializer, LeadLimitedSerializer
-from rest.models import Lead
+    LeadSerializer, PropertySerializer, ContactSerializer
+from rest.models import Lead, Property, Contact
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 import json
@@ -29,15 +29,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 class LeadViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Lead.objects.all()
-    serializer_class = LeadLimitedSerializer
-
-    """
-    def get_serializer_class(self):
-        query_params = self.request.GET
-        if 'all' in query_params and query_params['all'] in ['true', 'True', 'TRUE']:
-            return LeadSerializer
-        return LeadLimitedSerializer
-    """
+    serializer_class = LeadSerializer
 
     def get_queryset(self):
         query_params = self.request.GET
@@ -46,10 +38,6 @@ class LeadViewSet(viewsets.ModelViewSet):
         return Lead().get_by_components(query_params)
 
     def retrieve(self, request, pk=None):
-        if request.user.is_anonymous:
-            #return Response("You have to be logged in to view this resource", 401)
-            pass
-
         queryset = Lead.objects.all()
         lead = get_object_or_404(queryset, pk=pk)
 
@@ -59,10 +47,24 @@ class LeadViewSet(viewsets.ModelViewSet):
 
         query_params = self.request.GET
         if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
-            lead.generate_owner()
             lead.users.add(request.user)
             serializer = LeadSerializer(lead)
             return Response(serializer.data)
+        else:
+            "they don't own it"
+            pass
 
-        serializer = LeadLimitedSerializer(lead)
+        serializer = LeadSerializer(lead)
         return Response(serializer.data)
+
+
+class PropertyViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Property.objects.all()
+    serializer_class = PropertySerializer
+
+
+class ContactViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer

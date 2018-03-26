@@ -6,7 +6,6 @@ from django.conf import settings
 from pprint import pprint
 from django.contrib.auth.models import User, Group
 from django.contrib.postgres.fields import JSONField
-from piplapis.search import SearchAPIRequest
 
 
 class Lead(models.Model):
@@ -20,8 +19,6 @@ class Lead(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     users = models.ManyToManyField(User, blank=True)
-    properties = models.ManyToManyField('Property', blank=True)
-    contacts = models.ManyToManyField('Contact', blank=True)
 
     # Address Data
     formatted_address = models.CharField(default='', unique=True, max_length=128)
@@ -150,6 +147,7 @@ class LeadData(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    lead = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, default=None)
 
     is_premium = models.BooleanField()
     data = JSONField(default=None, null=True)
@@ -163,19 +161,19 @@ class Property(LeadData):
     """
 
     @staticmethod
-    def get_premium_data(formatted_address):
+    def get_premium_data(data):
         """
         Get Property info via Estated API
-        :param formatted_address: a string, the address formatted from components (e.g., '123 Fake St, Buffalo, NY')
+        :param data: dict, params from Estated query (conjoined_address)
         :return: a dictionary representing the JSON response from the Estated Property API
 
         """
 
-        url_address = formatted_address.replace(' ', '+')
-        get_url = "https://estated.com/api/property?token={}&conjoined_address={}"\
-            .format(settings.ESTATED_API_KEY, url_address)
-
-        r = requests.get(get_url)
+        config = {
+            "token": settings.ESTATED_API_KEY
+        }
+        get_url = "https://estated.com/api/property"
+        r = requests.get(get_url, params={**data, **config})
         return r.json()
 
     def set_premium_data(self, formatted_address):
@@ -186,7 +184,7 @@ class Property(LeadData):
 
         """
 
-        res = self.get_data(formatted_address)
+        res = self.get_premium_data({"conjoined_address": formatted_address})
 
         if res['status'] == 'success':
             self.data = res['data']
@@ -211,23 +209,23 @@ class Contact(LeadData):
     """
 
     @staticmethod
-    def get_premium_data(raw_address, raw_name):
+    def get_premium_data(data):
         """
         Get Contact info from Pipl API
-        :param raw_address: string, a formatted address
-        :param raw_name: string, a formatted name (first and last)
+        :param data: dict, containing query for Pipl (raw_name, raw_address)
         :return: a dictionary representing the JSON response from the Estated Property API
 
         """
 
-        request = SearchAPIRequest(email=u"clark.kent@example.com",
-                                   match_requirements=u'name and emails and phones',
-                                   minimum_match=1.0,
-                                   api_key=settings.PIPL_API_KEY
-                                   )
-        response = request.send()
-
-        return json.loads(response.raw_json)
+        config = {
+            "email": "clark.kent@example.com",
+            "match_requirements": "name and emails and phones",
+            "minimium_match": "1.0",
+            "api_key": settings.PIPL_API_KEY
+        }
+        get_url = "http://api.pipl.com/search/"
+        r = requests.get(get_url, params={**data, **config})
+        return r.json()
 
     def set_premium_data(self, raw_address, raw_name):
         """
@@ -237,7 +235,10 @@ class Contact(LeadData):
 
         """
 
-        res = self.get_premium_data(raw_address, raw_name)
+        res = self.get_premium_data({
+            "raw_address": raw_address,
+            "raw_name": raw_name
+        })
 
         if res['@persons_count'] == 1:
             self.data = res['person']

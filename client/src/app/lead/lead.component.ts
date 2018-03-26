@@ -9,7 +9,7 @@ import {LeadService} from "../lead.service";
 export class LeadComponent implements OnInit {
 
   Object = Object;
-  @Input() leadData: object;
+  @Input() leadData: any;
   @Output() loadProperty: EventEmitter<number> = new EventEmitter();
 
   constructor(public leadService: LeadService) { }

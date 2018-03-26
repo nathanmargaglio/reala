@@ -147,8 +147,6 @@ class LeadData(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    lead = models.ForeignKey(Lead, on_delete=models.CASCADE, null=True, default=None)
-
     is_premium = models.BooleanField()
     data = JSONField(default=None, null=True)
 
@@ -159,6 +157,9 @@ class Property(LeadData):
     This model provides columns and methods for Property data.
 
     """
+
+    lead = models.ForeignKey(Lead, related_name='properties',
+                             on_delete=models.CASCADE, null=True, default=None)
 
     @staticmethod
     def get_premium_data(data):
@@ -207,6 +208,9 @@ class Contact(LeadData):
     This model provides columns and methods for contact information.
 
     """
+
+    lead = models.ForeignKey(Lead, related_name='contacts',
+                             on_delete=models.CASCADE, null=True, default=None)
 
     @staticmethod
     def get_premium_data(data):

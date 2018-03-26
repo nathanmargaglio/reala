@@ -17,10 +17,21 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class LeadSerializer(serializers.ModelSerializer):
     address = serializers.CharField(write_only=True, required=False)
+    properties = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    contacts = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Lead
         fields = '__all__'
+        extra_fields = ['properties', 'contacts']
+
+    def get_field_names(self, declared_fields, info):
+        expanded_fields = super(LeadSerializer, self).get_field_names(declared_fields, info)
+
+        if getattr(self.Meta, 'extra_fields', None):
+            return expanded_fields + self.Meta.extra_fields
+        else:
+            return expanded_fields
 
     def create(self, validated_data):
         lead = Lead()

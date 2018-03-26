@@ -22,6 +22,7 @@ export class LeadComponent implements OnInit {
   }
 
   emitProperty(){
+    console.log(this.leadData);
     this.loadProperty.emit(this.leadData['properties']);
   }
 

@@ -23,4 +23,10 @@ export class PropertyService {
   getPropertyDetails(id) {
     return this.restangular.one('properties', id).get();
   }
+
+  purchasePropertyDetails(id) {
+    let post = this.restangular.one('leads', id);
+    post.customGET('', {purchase: 'True'});
+    return post.get();
+  }
 }

@@ -32,6 +32,10 @@ export class PropertyComponent implements OnInit {
   ngOnInit() {
   }
 
+  purchasePropertyDetails(id) {
+    this.propertyService.purchasePropertyDetails(id);
+  }
+
   loadPropertyDetails(id) {
     let promise = this.propertyService.getPropertyDetails(id);
 

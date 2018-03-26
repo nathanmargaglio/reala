@@ -124,22 +124,22 @@ class Lead(models.Model):
 
         return self
 
-    def purchase_property_data(self):
+    def create_lead(self, address):
+        # TODO: Check if any of these already exist
+        self.set_fields_from_string(address)
+
         p = Property()
-        p.set_premium_data(self.formatted_address)
+        p.is_premium = True
         p.save()
         self.properties.add(p)
-        self.save()
-        return p
 
-    def purchase_contact_data(self, raw_address, raw_name):
         c = Contact()
-        c.set_premium_data(raw_address, raw_name)
-        c.save()
-
+        c.is_premium = True
         self.contacts.add(c)
+
         self.save()
-        return c
+
+        return self
 
 
 class LeadData(models.Model):
@@ -196,6 +196,12 @@ class Property(LeadData):
         else:
             return None
 
+    def purchase_property_data(self, formatted_address):
+        # TODO: Self lookup, JSON data setter, refactor
+        self.set_premium_data(formatted_address)
+        self.save()
+        return self
+
 
 class Contact(LeadData):
 
@@ -240,4 +246,10 @@ class Contact(LeadData):
             return self
         else:
             return None
+
+    def purchase_contact_data(self, raw_address, raw_name):
+        # TODO: Self lookup, JSON data setter, refactor
+        self.set_premium_data(raw_address, raw_name)
+        self.save()
+        return self
 

@@ -68,8 +68,50 @@ class PropertyViewSet(viewsets.ModelViewSet):
     queryset = Property.objects.all()
     serializer_class = PropertySerializer
 
+    def retrieve(self, request, pk=None):
+        queryset = Property.objects.all()
+        property = get_object_or_404(queryset, pk=pk)
+
+        query_params = request.GET
+        if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
+            property = property.purchase_property_data()
+            print(property)
+            serializer = PropertySerializer(property)
+            return Response(serializer.data)
+        else:
+            pass
+
+        # TODO: Refactor one to many for lookup
+        #if self.request.user in property.lead.users.all():
+        #    serializer = PropertySerializer(property)
+        #    return Response(serializer.data)
+
+        serializer = PropertySerializer(property)
+        return Response(serializer.data)
+
 
 class ContactViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
+
+    def retrieve(self, request, pk=None):
+        queryset = Contact.objects.all()
+        contact = get_object_or_404(queryset, pk=pk)
+
+        query_params = request.GET
+        if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
+            contact = contact.purchase_contact_data()
+            print(contact)
+            serializer = ContactSerializer(contact)
+            return Response(serializer.data)
+        else:
+            pass
+
+        # TODO: Refactor one to many for lookup
+        #if self.request.user in property.lead.users.all():
+        #    serializer = PropertySerializer(property)
+        #    return Response(serializer.data)
+
+        serializer = ContactSerializer(contact)
+        return Response(serializer.data)

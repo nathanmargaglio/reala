@@ -25,9 +25,7 @@ class LeadSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         lead = Lead()
         if 'address' in validated_data:
-            lead.set_fields_from_string(validated_data['address'])
-            lead.save()
-            return lead
+            return lead.create_lead(validated_data['address'])
         else:
             raise serializers.ValidationError("address field required:  supply a raw address")
 

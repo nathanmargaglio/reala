@@ -5,6 +5,7 @@ import { LeadService } from "../lead.service";
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import {LeadComponent} from "../lead/lead.component";
 import {PropertyComponent} from "../property/property.component";
+import {ContactComponent} from "../contact/contact.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,6 @@ import {PropertyComponent} from "../property/property.component";
 export class DashboardComponent implements OnInit {
 
   address: string = '';
-  activeProperty: number;
   scrollConfig = PERFECT_SCROLLBAR_CONFIG;
   leads;
   username: string;
@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
   auth: AuthService;
 
   @ViewChild(PropertyComponent) property;
+  @ViewChild(ContactComponent) contact;
 
   constructor(public authService: AuthService, public leadService: LeadService) { }
 
@@ -51,8 +52,15 @@ export class DashboardComponent implements OnInit {
     console.log(properties);
     if (properties) {
       // TODO: Load all Property data
-      this.activeProperty = properties[0];
       this.property.loadPropertyDetails(properties[0]);
+    }
+  }
+
+  loadContact(contacts) {
+    console.log(contacts);
+    if (contacts) {
+      // TODO: Load all Contact data
+      this.contact.loadContactDetails(contacts[0]);
     }
   }
 

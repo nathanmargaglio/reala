@@ -10,12 +10,16 @@
           <app-lead
             [leadData]="lead"
             (loadProperty)="loadProperty($event)"
+            (loadContact)="loadContact($event)"
           ></app-lead>
         </mat-list-item>
       </mat-list>
     </mat-card>
     <mat-card class="detail-card" [perfectScrollbar]="scrollConfig">
       <app-property></app-property>
+    </mat-card>
+    <mat-card class="detail-card" [perfectScrollbar]="scrollConfig">
+      <app-contact></app-contact>
     </mat-card>
   </div>
 </ng-container>

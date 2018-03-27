@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LeadService } from './lead.service'
 import { AuthService } from './auth/auth.service';
 import { PropertyService } from "./property.service";
+import { ContactService } from "./contact.service";
 
 // Material
 import { MatButtonModule } from '@angular/material/button';
@@ -29,6 +30,7 @@ import { ButtonComponent } from './button/button.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LeadComponent } from './lead/lead.component';
 import { PropertyComponent } from './property/property.component';
+import { ContactComponent } from './contact/contact.component';
 
 export function RestangularConfigFactory (RestangularProvider) {
   RestangularProvider.setBaseUrl(`${environment.apiUrl}/api`);
@@ -60,7 +62,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ButtonComponent,
     DashboardComponent,
     LeadComponent,
-    PropertyComponent
+    PropertyComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
@@ -89,6 +92,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     },
     LeadService,
     PropertyService,
+    ContactService,
     AuthService,
     Restangular
   ],

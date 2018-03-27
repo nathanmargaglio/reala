@@ -11,6 +11,7 @@ export class LeadComponent implements OnInit {
   Object = Object;
   @Input() leadData: any;
   @Output() loadProperty: EventEmitter<number> = new EventEmitter();
+  @Output() loadContact: EventEmitter<number> = new EventEmitter();
 
   constructor(public leadService: LeadService) { }
 
@@ -21,9 +22,19 @@ export class LeadComponent implements OnInit {
     //this.leadService.purchaseLeadDetails(id);
   }
 
+  emitAll() {
+    this.emitProperty();
+    this.emitContact();
+  }
+
   emitProperty(){
     console.log(this.leadData);
     this.loadProperty.emit(this.leadData['properties']);
+  }
+
+  emitContact(){
+    console.log(this.leadData);
+    this.loadContact.emit(this.leadData['contacts']);
   }
 
   loadLeadDetails(id) {

@@ -2,28 +2,30 @@ import {EventEmitter, Injectable, Output} from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Restangular, RestangularModule } from "ngx-restangular";
 
+
 @Injectable()
-export class PropertyService {
+export class ContactService {
 
   api;
   @Output()
   loadedLeads = new EventEmitter<object>();
 
   constructor(private http: HttpClient, private restangular: Restangular){
-    this.api = this.restangular.all('properties');
+    this.api = this.restangular.all('contacts');
   }
 
-  getProperties() {
+  getContacts() {
     return this.api.getList();
   }
 
-  getPropertyDetails(id) {
-    return this.restangular.one('properties', id).get();
+  getContactDetails(id) {
+    return this.restangular.one('contacts', id).get();
   }
 
-  purchasePropertyDetails(id) {
-    let post = this.restangular.one('properties', id);
+  purchaseConactDetails(id) {
+    let post = this.restangular.one('contacts', id);
     post.customGET('', {purchase: 'True'});
     return post.get();
   }
+
 }

@@ -8,8 +8,6 @@ import {PropertyService} from "../property.service";
 })
 export class PropertyComponent implements OnInit {
 
-  @Input() id: number;
-
   Object = Object;
   leadData;
   propertyData;
@@ -33,7 +31,7 @@ export class PropertyComponent implements OnInit {
   }
 
   purchasePropertyDetails(id) {
-    this.propertyService.purchasePropertyDetails(id);
+    //this.propertyService.purchasePropertyDetails(id);
   }
 
   loadPropertyDetails(id) {

@@ -29,7 +29,7 @@ export class ContactComponent implements OnInit {
         } else {
           this.contactData = null;
         }
-        
+
       });
     } else {
       console.log("Need to log in");

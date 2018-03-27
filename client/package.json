@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --delete-output-path false",
+    "start": "ng serve --host 0.0.0.0 --delete-output-path false",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",

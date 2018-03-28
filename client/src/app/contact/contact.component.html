@@ -1,23 +1,30 @@
-<mat-accordion *ngIf="contactData" >
+<mat-tab-group *ngIf="contactData">
+  <ng-container *ngFor="let key of Object.keys(contactData)">
+    <mat-tab *ngIf="contactData[key]" label="{{key}}">
+      <mat-card>
+        <mat-card-content>
+          <p *ngIf="!isObject(contactData[key])">
+            {{contactData[key]}}
+          </p>
+          <ng-container *ngIf="isObject(contactData[key])">
+            <ng-container *ngFor="let key0 of Object.keys(contactData[key])">
+              <h4>{{key0}}</h4>
+              <p *ngIf="!isObject(contactData[key][key0])">
+                {{contactData[key][key0]}}
+              </p>
+              <ng-container *ngIf="isObject(contactData[key][key0])">
+                <ng-container *ngFor="let key1 of Object.keys(contactData[key][key0])">
+                  <p>
+                    <b>{{key1}}</b> : {{contactData[key][key0][key1]}}
+                  </p>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+  </ng-container>
+</mat-tab-group>
 
-
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Contact
-      </mat-panel-title>
-      <mat-panel-description>
-
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <ul>
-      <ng-container *ngFor="let key of Object.keys(contactData)">
-        <li *ngIf="contactData[key]">
-          {{key}} : {{contactData[key]}}
-        </li>
-      </ng-container>
-    </ul>
-  </mat-expansion-panel>
-
-</mat-accordion>
 

@@ -36,4 +36,6 @@ export class ContactComponent implements OnInit {
     }
   }
 
+  isObject(val) { return typeof val === 'object'; }
+
 }

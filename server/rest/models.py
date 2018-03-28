@@ -124,6 +124,7 @@ class Lead(models.Model):
     def create_lead(self, address):
         # TODO: Check if any of these already exist
         self.set_fields_from_string(address)
+        self.save()
 
         p = Property()
         p.is_premium = True
@@ -132,6 +133,7 @@ class Lead(models.Model):
 
         c = Contact()
         c.is_premium = True
+        c.save()
         self.contacts.add(c)
 
         self.save()

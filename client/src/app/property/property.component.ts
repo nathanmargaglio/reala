@@ -67,4 +67,7 @@ export class PropertyComponent implements OnInit {
     }
   }
 
+  isObject(val) { return typeof val === 'object'; }
+
+
 }

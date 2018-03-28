@@ -1,119 +1,29 @@
-<mat-accordion *ngIf="propertyData" >
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Owner Info
-      </mat-panel-title>
-      <mat-panel-description>
+<mat-tab-group *ngIf="propertyData">
+  <ng-container *ngFor="let key of Object.keys(propertyData)">
+    <mat-tab *ngIf="propertyData[key]" label="{{key}}">
+      <mat-card>
+        <mat-card-content>
+          <p *ngIf="propertyData[key] && !isObject(propertyData[key])">
+            {{propertyData[key]}}
+          </p>
+          <ng-container *ngIf="propertyData[key] &&  isObject(propertyData[key])">
+            <ng-container *ngFor="let key0 of Object.keys(propertyData[key])">
+              <p *ngIf="propertyData[key][key0] && !isObject(propertyData[key][key0])">
+                <b>{{key0}}</b> : {{propertyData[key][key0]}}
+              </p>
+              <ng-container *ngIf="propertyData[key][key0] && isObject(propertyData[key][key0])">
+                <ng-container *ngFor="let key1 of Object.keys(propertyData[key][key0])">
+                  <p *ngIf="propertyData[key][key0][key1]">
+                    <b>{{key1}}</b> : {{propertyData[key][key0][key1]}}
+                  </p>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+  </ng-container>
+</mat-tab-group>
 
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <p *ngFor="let owner of ownersData">
-      {{owner.name}}
-      <br>
-      {{owner.address}} {{owner.city}} {{owner.state}} {{owner.zip}}
-    </p>
-  </mat-expansion-panel>
 
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Comparables
-      </mat-panel-title>
-      <mat-panel-description>
-
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <p *ngFor="let comparable of comparablesData">
-      {{comparable.property.address.formatted_street_address}} (comp score: {{comparable.property.metadata.comp_score}})
-      <br>
-      {{comparable.property.address.city}},
-      {{comparable.property.address.state}}
-      {{comparable.property.address.zip_code}}
-    </p>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Site
-      </mat-panel-title>
-      <mat-panel-description>
-
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <ul>
-      <ng-container *ngFor="let key of Object.keys(siteData)">
-        <li *ngIf="siteData[key]">
-          {{key}} : {{siteData[key]}}
-        </li>
-      </ng-container>
-    </ul>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel *ngIf="structuresData.length">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Structures
-      </mat-panel-title>
-      <mat-panel-description>
-
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <ul>
-      <ng-container *ngFor="let key of Object.keys(structuresData[0])">
-        <li *ngIf="structuresData[0][key]">
-          {{key}} : {{structuresData[0][key]}}
-        </li>
-      </ng-container>
-    </ul>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel *ngIf="taxesData.length">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Taxes
-      </mat-panel-title>
-      <mat-panel-description>
-
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <ul>
-      <ng-container *ngFor="let key of Object.keys(taxesData[0])">
-        <li *ngIf="taxesData[0][key]">
-          {{key}} : {{taxesData[0][key]}}
-        </li>
-      </ng-container>
-    </ul>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Valuation
-      </mat-panel-title>
-      <mat-panel-description>
-
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <ul>
-      <ng-container *ngFor="let key of Object.keys(valuationData)">
-        <li *ngIf="valuationData[key]">
-          {{key}} : {{valuationData[key]}}
-        </li>
-      </ng-container>
-    </ul>
-  </mat-expansion-panel>
-</mat-accordion>
-
-<mat-expansion-panel *ngIf="!propertyData && leadData">
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      Owner
-    </mat-panel-title>
-    <mat-panel-description>
-
-    </mat-panel-description>
-  </mat-expansion-panel-header>
-  <button mat-raised-button (click)="purchasePropertyDetails(leadData.id)">Get Owner Info</button>
-</mat-expansion-panel>

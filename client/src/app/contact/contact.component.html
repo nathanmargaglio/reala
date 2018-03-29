@@ -1,3 +1,17 @@
+<mat-card>
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input name="name" matInput placeholder="name" [(ngModel)]="name" #ctrl="ngModel">
+    </mat-form-field>
+    <mat-form-field>
+      <input name="address" matInput placeholder="Address" [(ngModel)]="address" #ctrl="ngModel">
+    </mat-form-field>
+    <button type="submit" mat-raised-button>+</button>
+  </form>
+  <button mat-raised-button (click)="purchaseContactDetails()">Purchase Data</button>
+</mat-card>
+
+
 <mat-tab-group *ngIf="contactData">
   <ng-container *ngFor="let key of Object.keys(contactData)">
     <mat-tab *ngIf="contactData[key]" label="{{key}}">

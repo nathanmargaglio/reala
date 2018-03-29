@@ -22,10 +22,16 @@ export class ContactService {
     return this.restangular.one('contacts', id).get();
   }
 
-  purchaseConactDetails(id) {
+  purchaseContactDetails(id) {
     let post = this.restangular.one('contacts', id);
     post.customGET('', {purchase: 'True'});
     return post.get();
+  }
+
+  update_data(id, data) {
+    let put = this.restangular.one('contacts', id);
+    put.customPUT(data);
+    return put.put();
   }
 
 }

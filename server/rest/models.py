@@ -152,6 +152,12 @@ class LeadData(models.Model):
     is_premium = models.BooleanField()
     data = JSONField(default=None, null=True)
 
+    def purchase_data(self):
+        # TODO: Self lookup, JSON data setter, refactor
+        self.set_premium_data()
+        self.save()
+        return self
+
 
 class Property(LeadData):
 
@@ -162,6 +168,7 @@ class Property(LeadData):
 
     lead = models.ForeignKey(Lead, related_name='properties',
                              on_delete=models.CASCADE, null=True, default=None)
+    formatted_address = models.CharField(default='', max_length=128)
 
     @staticmethod
     def get_premium_data(data):
@@ -179,7 +186,7 @@ class Property(LeadData):
         r = requests.get(get_url, params={**data, **config})
         return r.json()
 
-    def set_premium_data(self, formatted_address):
+    def set_premium_data(self):
         """
         Creates an Owner object and fills it with data
         :param data: a dict with Owner data
@@ -187,7 +194,9 @@ class Property(LeadData):
 
         """
 
-        res = self.get_premium_data({"conjoined_address": formatted_address})
+        assert self.formatted_address, 'formatted_address not set.'
+
+        res = self.get_premium_data({"conjoined_address": self.formatted_address})
 
         if res['status'] == 'success':
             self.data = res['data']
@@ -196,12 +205,6 @@ class Property(LeadData):
             return self
         else:
             return None
-
-    def purchase_property_data(self, formatted_address):
-        # TODO: Self lookup, JSON data setter, refactor
-        self.set_premium_data(formatted_address)
-        self.save()
-        return self
 
 
 class Contact(LeadData):
@@ -213,6 +216,8 @@ class Contact(LeadData):
 
     lead = models.ForeignKey(Lead, related_name='contacts',
                              on_delete=models.CASCADE, null=True, default=None)
+    raw_address = models.CharField(default='', max_length=128)
+    raw_name = models.CharField(default='', max_length=128)
 
     @staticmethod
     def get_premium_data(data):
@@ -225,15 +230,15 @@ class Contact(LeadData):
 
         config = {
             "email": "clark.kent@example.com",
-            "match_requirements": "name and emails and phones",
-            "minimium_match": "1.0",
-            "api_key": settings.PIPL_API_KEY
+            "match_requirements": "names and phones and emails",
+            "minimum_match": 1.0,
+            "key": settings.PIPL_API_KEY
         }
         get_url = "http://api.pipl.com/search/"
         r = requests.get(get_url, params={**data, **config})
         return r.json()
 
-    def set_premium_data(self, raw_address, raw_name):
+    def set_premium_data(self):
         """
         Creates an Owner object and fills it with data
         :param data: a dict with Owner data
@@ -241,22 +246,17 @@ class Contact(LeadData):
 
         """
 
+        assert self.raw_address, 'raw_address not set.'
+        assert self.raw_name, 'raw_name not set.'
+
         res = self.get_premium_data({
-            "raw_address": raw_address,
-            "raw_name": raw_name
+            "raw_address": self.raw_address,
+            "raw_name": self.raw_name
         })
 
-        if res['@persons_count'] == 1:
-            self.data = res['person']
-            self.is_premium = True
-            self.save()
-            return self
-        else:
-            return None
-
-    def purchase_contact_data(self, raw_address, raw_name):
-        # TODO: Self lookup, JSON data setter, refactor
-        self.set_premium_data(raw_address, raw_name)
+        print(res)
+        self.data = res
+        self.is_premium = True
         self.save()
         return self
 

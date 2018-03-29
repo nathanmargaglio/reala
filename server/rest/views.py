@@ -42,18 +42,6 @@ class LeadViewSet(viewsets.ModelViewSet):
         lead = get_object_or_404(queryset, pk=pk)
 
         query_params = request.GET
-        if 'purchase_property' in query_params and query_params['purchase_property'] in ['true', 'True', 'TRUE']:
-            property = lead.purchase_property_data()
-            print(property)
-            serializer = PropertySerializer(property)
-            return Response(serializer.data)
-        elif 'purchase_contact' in query_params and query_params['purchase_contact'] in ['true', 'True', 'TRUE']:
-            contact = lead.purchase_contact_data(query_params['raw_address'], query_params['raw_name'])
-            print(contact)
-            serializer = ContactSerializer(contact)
-            return Response(serializer.data)
-        else:
-            pass
 
         if self.request.user in lead.users.all():
             serializer = LeadSerializer(lead)
@@ -74,7 +62,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         query_params = request.GET
         if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
-            property = property.purchase_property_data()
+            property = property.purchase_data()
             print(property)
             serializer = PropertySerializer(property)
             return Response(serializer.data)
@@ -101,7 +89,7 @@ class ContactViewSet(viewsets.ModelViewSet):
 
         query_params = request.GET
         if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
-            contact = contact.purchase_contact_data()
+            contact = contact.purchase_data()
             print(contact)
             serializer = ContactSerializer(contact)
             return Response(serializer.data)

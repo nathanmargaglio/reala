@@ -31,7 +31,7 @@ export class PropertyComponent implements OnInit {
   }
 
   purchasePropertyDetails(id) {
-    //this.propertyService.purchasePropertyDetails(id);
+    this.propertyService.purchasePropertyDetails(id);
   }
 
   loadPropertyDetails(id) {

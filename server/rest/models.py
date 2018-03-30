@@ -259,7 +259,7 @@ class Contact(LeadData):
 
         print(res)
         if res['@persons_count'] == 1:
-            self.data = res
+            self.data = res['person']
             self.is_premium = True
             self.save()
             return self

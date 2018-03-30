@@ -11,25 +11,14 @@ export class PropertyComponent implements OnInit {
   Object = Object;
   rawData;
   propertyData;
-  addressData;
-  boundariesData;
-  comparablesData;
-  metaData;
-  mortgagesData;
-  ownersData;
-  postalData;
-  salesData;
-  siteData;
-  statusData;
-  structuresData;
-  taxesData;
-  valuationData;
+  disablePurchaseButton: boolean;
   address: string;
   id: number;
 
   constructor(public propertyService: PropertyService) { }
 
   ngOnInit() {
+    this.disablePurchaseButton = false;
   }
 
   onSubmit() {
@@ -41,8 +30,10 @@ export class PropertyComponent implements OnInit {
   }
 
   purchasePropertyDetails() {
+    this.disablePurchaseButton = true;
     this.propertyService.purchasePropertyDetails(this.id).subscribe(res => {
       console.log(res);
+      this.disablePurchaseButton = false;
       this.loadPropertyDetails(this.id);
     })
   }

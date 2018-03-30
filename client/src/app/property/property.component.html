@@ -5,7 +5,7 @@
     </mat-form-field>
     <button type="submit" mat-raised-button>+</button>
   </form>
-  <button mat-raised-button (click)="purchasePropertyDetails()">Purchase Data</button>
+  <button mat-raised-button (click)="purchasePropertyDetails()" disabled="{{disablePurchaseButton}}">Purchase Data</button>
 </mat-card>
 
 <mat-tab-group *ngIf="propertyData">

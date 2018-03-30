@@ -14,6 +14,7 @@ export class ContactComponent implements OnInit {
   name: string;
   address: string;
   id: number;
+  disablePurchaseButton: boolean;
 
   @Output()
   reloadLeads = new EventEmitter();
@@ -21,6 +22,7 @@ export class ContactComponent implements OnInit {
   constructor(public contactService: ContactService) { }
 
   ngOnInit() {
+    this.disablePurchaseButton = false;
   }
 
   onSubmit() {
@@ -32,8 +34,10 @@ export class ContactComponent implements OnInit {
   }
 
   purchaseContactDetails() {
+    this.disablePurchaseButton = true;
     this.contactService.purchaseContactDetails(this.id).subscribe(res => {
-      this.reloadLeads.emit();
+      this.disablePurchaseButton = false;
+      this.loadContactDetails(this.id);
     })
   }
 

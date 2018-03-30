@@ -27,7 +27,7 @@ export class ContactComponent implements OnInit {
     console.log(this.address, this.name);
     this.contactService.update_data(this.id,
       {raw_name: this.name, raw_address: this.address}).subscribe(res => {
-      this.reloadLeads.emit();
+      this.loadContactDetails(this.id);
     });
   }
 

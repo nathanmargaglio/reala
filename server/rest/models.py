@@ -154,6 +154,7 @@ class LeadData(models.Model):
 
     def purchase_data(self):
         # TODO: Self lookup, JSON data setter, refactor
+        print("!!")
         self.set_premium_data()
         self.save()
         return self
@@ -198,6 +199,8 @@ class Property(LeadData):
 
         res = self.get_premium_data({"conjoined_address": self.formatted_address})
 
+        print("!!!")
+        print(res)
         if res['status'] == 'success':
             self.data = res['data']
             self.is_premium = True
@@ -255,8 +258,11 @@ class Contact(LeadData):
         })
 
         print(res)
-        self.data = res
-        self.is_premium = True
-        self.save()
-        return self
+        if res['@persons_count'] == 1:
+            self.data = res
+            self.is_premium = True
+            self.save()
+            return self
+        else:
+            return None
 

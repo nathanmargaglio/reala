@@ -9,7 +9,7 @@ import {PropertyService} from "../property.service";
 export class PropertyComponent implements OnInit {
 
   Object = Object;
-  leadData;
+  rawData;
   propertyData;
   addressData;
   boundariesData;
@@ -24,39 +24,41 @@ export class PropertyComponent implements OnInit {
   structuresData;
   taxesData;
   valuationData;
+  address: string;
+  id: number;
 
   constructor(public propertyService: PropertyService) { }
 
   ngOnInit() {
   }
 
-  purchasePropertyDetails(id) {
-    this.propertyService.purchasePropertyDetails(id);
+  onSubmit() {
+    console.log(this.address);
+    this.propertyService.update_data(this.id,
+      {formatted_address: this.address}).subscribe(res => {
+      this.loadPropertyDetails(this.id)
+    });
+  }
+
+  purchasePropertyDetails() {
+    this.propertyService.purchasePropertyDetails(this.id).subscribe(res => {
+      console.log(res);
+      this.loadPropertyDetails(this.id);
+    })
   }
 
   loadPropertyDetails(id) {
+    this.id = id;
     let promise = this.propertyService.getPropertyDetails(id);
 
     if (promise) {
       promise.subscribe(data => {
-        this.leadData = data;
+        console.log(data);
+        this.rawData = data;
+        this.address = data.formatted_address;
 
-        if (this.leadData.data && this.leadData.data.property) {
-          this.propertyData = this.leadData.data.property;
-
-          this.addressData = this.propertyData.address;
-          this.boundariesData = this.propertyData.boundaries;
-          this.comparablesData = this.propertyData.comparables;
-          this.metaData = this.propertyData.metadata;
-          this.mortgagesData = this.propertyData.mortgages;
-          this.ownersData = this.propertyData.owners;
-          this.postalData = this.propertyData.postal;
-          this.salesData = this.propertyData.sales;
-          this.siteData = this.propertyData.site;
-          this.statusData = this.propertyData.status;
-          this.structuresData = this.propertyData.structures;
-          this.taxesData = this.propertyData.taxes;
-          this.valuationData = this.propertyData.valuation;
+        if (this.rawData && this.rawData.data) {
+          this.propertyData = this.rawData.data.property
         } else {
           this.propertyData = null;
         }

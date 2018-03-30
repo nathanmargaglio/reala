@@ -22,8 +22,16 @@ export class PropertyService {
   }
 
   purchasePropertyDetails(id) {
+    console.log("ID", id);
     let post = this.restangular.one('properties', id);
     post.customGET('', {purchase: 'True'});
     return post.get();
+  }
+
+  update_data(id, data) {
+    console.log("ID", id);
+    let put = this.restangular.one('properties', id);
+    put.customPUT(data);
+    return put.put();
   }
 }

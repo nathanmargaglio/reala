@@ -63,7 +63,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
         query_params = request.GET
         if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
             property = property.purchase_data()
-            print(property)
             serializer = PropertySerializer(property)
             return Response(serializer.data)
         else:
@@ -88,6 +87,7 @@ class ContactViewSet(viewsets.ModelViewSet):
         contact = get_object_or_404(queryset, pk=pk)
 
         query_params = request.GET
+        print(query_params)
         if 'purchase' in query_params and query_params['purchase'] in ['true', 'True', 'TRUE']:
             contact = contact.purchase_data()
             print(contact)
